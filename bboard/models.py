@@ -33,13 +33,6 @@ class Rubric(models.Model):
     def __str__(self):
         return self.name
 
-    # def save(self, *args, **kwargs):
-    #     if self.is_model_correct():
-    #         super().save(*args, **kwargs)
-
-    # def delete(self, *args, **kwargs):
-    #     super().delete(*args, **kwargs)
-
     def get_absolute_url(self):
         return f"/{self.pk}/"
 
@@ -74,8 +67,6 @@ class Bb(models.Model):
                              error_messages={'invalid': 'Неправильное название товара!'}
                              )  # primary_key=True
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
-    # price = models.FloatField(  # default=0,
-    #                           null=True, blank=True, verbose_name='Цена')
     price = models.DecimalField(max_digits=15, decimal_places=2,
                                 null=True, blank=True, verbose_name='Цена',
                                 validators=[validate_even,
@@ -83,10 +74,6 @@ class Bb(models.Model):
                                             ])
     published = models.DateTimeField(auto_now_add=True, db_index=True,
                                      verbose_name='Опубликовано')
-    # is_active = models.BooleanField(  # default=True
-    #                                 default=is_active_default
-    #                                 )
-
     def title_and_price(self):
         if self.price:
             return f'{self.title} ({self.price:.2f})'

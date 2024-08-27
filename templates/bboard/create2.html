@@ -2,12 +2,12 @@
 
 
 
-{% block title %}Добавление объявления{% endblock %}
+{% block title %}Добавление rubric{% endblock %}
 
-{% block content %}
-<h2>Добавление объявления</h2>
-
+{% block net %}
+<h2>Добавление rubric</h2>
     <form method="post">
+{#    <form action="{% url 'bboard:add_save' %}" method="post"> #}
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Добавить</button>
