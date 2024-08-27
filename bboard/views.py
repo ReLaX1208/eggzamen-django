@@ -30,7 +30,6 @@ def index(request):
 
     page = paginator.get_page(page_num)
 
-    # context = {'bbs': bbs, 'rubrics': rubrics}
     context = {'rubrics': rubrics, 'bbs': page.object_list, 'page': page}
 
     return render(request, 'bboard/index.html', context)
@@ -43,7 +42,6 @@ class BbIndexView(ArchiveIndexView):
     template_name = 'bboard/index.html'
     context_object_name = 'bbs'
     allow_empty = True
-    # allow_future = True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,6 +71,11 @@ class BbByRubricView(ListView):
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         context['current_rubric'] = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         return context
+
+class morozhcreateview(CreateView):
+    template_name = 'bboard/create3.html'
+    form_class = RubricForm
+    success_url = reverse_lazy('bboard:index')
 
 class RubCreateView(CreateView):
     template_name = 'bboard/create2.html'

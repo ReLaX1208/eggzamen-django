@@ -26,6 +26,19 @@ class MinMaxValueValidator:
                                   params={'min': self.min_value, 'max': self.max_value})
 
 
+class Morozhenoe(models.Model):
+    name = models.CharField(max_length=20, db_index=True, unique=True,
+                            verbose_name='Название')
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f"/{self.pk}/"
+    class Meta:
+        verbose_name = 'Мороженное'
+        verbose_name_plural = 'Мороженное'
+        ordering = ['name']
+
 class Rubric(models.Model):
     name = models.CharField(max_length=20, db_index=True, unique=True,
                             verbose_name='Название')

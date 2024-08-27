@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from bboard.models import Bb, Rubric
+from bboard.models import Bb, Rubric, Morozhenoe
 
 
 class BbForm(ModelForm):
@@ -17,6 +17,14 @@ class BbForm(ModelForm):
         model = Bb
         fields = ('title', 'content', 'price', 'rubric')
         labels = {'title': 'Nazvanie'}
+
+class MorozhForm(ModelForm):
+    name = forms.CharField(label='Nazvanie')
+
+    class Meta:
+        model = Morozhenoe
+        fields = {'name'}
+        labels = {'name': 'Nazvanie'}
 
 class RubricForm(ModelForm):
     name = forms.CharField(label='Nazvanie')
