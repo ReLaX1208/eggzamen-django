@@ -1,0 +1,62 @@
+body{
+    background-color: cadetblue;
+}
+header h1 {
+    font-size: 40pt;
+    text-transform: uppercase;
+    text-align: center;
+}
+nav {
+    font-size: 16pt;
+    width: 200px;
+    float: left;
+}
+nav a {
+    display: block;
+    margin: 10px 0;
+}
+section {
+    margin-right: 100px;
+    padding: 40px;
+  padding-left: 300px;
+  padding-right: 300px;
+  display: flex;
+  justify-content: center;
+}
+.paginator{
+     position: fixed;
+  left: 50%;
+  bottom: 60px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+}
+.pagination{
+    position: fixed;
+  left: 50%;
+  bottom: -15px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+}
+.b1 {
+    width: 300px;
+  height: 350px;
+  margin: 2px;
+
+}
+
+.b2 {
+    width: 300px;
+  height: 350px;
+  margin: 2px;
+
+}
+
+.b3 {
+    width:300px;
+  height: 350px;
+  margin: 2px;
+}
+.wrapper-center {
+   display: flex;
+   flex-wrap: wrap;
+}
