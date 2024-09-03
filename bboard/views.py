@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.forms.formsets import ORDERING_FIELD_NAME
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, HttpResponseNotFound, \
     Http404, StreamingHttpResponse, FileResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
@@ -13,11 +14,12 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
-from bboard.forms import BbForm, RubricForm
+from bboard.forms import BbForm, RubricFormSet, RubricForm
 from bboard.models import Bb, Rubric
 
 
 def index(request):
+
     bbs = Bb.objects.order_by('-published')
     rubrics = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
 
@@ -192,3 +194,29 @@ class BbDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
+def rubrics(request):
+    rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
+
+    if request.method == 'POST':
+        formset = RubricFormSet(request.POST)
+
+        if formset.is_valid():
+
+            formset.save(commit=False)
+
+            for form in formset:
+                if form.cleaned_data:
+                    rubric = form.save(commit=False)
+                    rubric.order = form.cleaned_data[ORDERING_FIELD_NAME]
+                    rubric.save()
+
+            for rubric in formset.deleted_objects:
+                rubric.delete()
+
+            # formset.save()
+            return redirect('bboard:index')
+    else:
+        formset = RubricFormSet()
+
+    context = {'formset': formset, 'rubrics': rubs}
+    return render(request, 'bboard/rubrics.html', context)

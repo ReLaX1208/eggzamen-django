@@ -18,43 +18,36 @@ nav a {
 section {
     margin-right: 100px;
     padding: 40px;
-  padding-left: 300px;
-  padding-right: 300px;
+  padding-left: 130px;
+  padding-right: 0px;
   display: flex;
   justify-content: center;
 }
 .paginator{
-     position: fixed;
-  left: 50%;
-  bottom: 60px;
-  transform: translate(-50%, -50%);
-  margin: 0 auto;
-}
-.pagination{
-    position: fixed;
-  left: 50%;
-  bottom: -15px;
-  transform: translate(-50%, -50%);
-  margin: 0 auto;
+width:300px;
+margin-left: 350px;
+
+
 }
 .b1 {
     width: 300px;
   height: 350px;
-  margin: 2px;
-
+  margin: 5px;
+  background-color:red;
 }
 
 .b2 {
     width: 300px;
   height: 350px;
-  margin: 2px;
-
+  margin: 5px;
+  background-color:yellow;
 }
 
 .b3 {
     width:300px;
   height: 350px;
-  margin: 2px;
+  margin: 5px;
+    background-color:green;
 }
 .wrapper-center {
    display: flex;
