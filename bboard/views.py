@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.forms.formsets import ORDERING_FIELD_NAME
@@ -194,6 +195,7 @@ class BbDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
+@login_required(login_url='login')
 def rubrics(request):
     rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
 
