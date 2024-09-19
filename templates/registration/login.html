@@ -5,15 +5,17 @@
 {% block title %}Вход{% endblock %}
 
 {% block net %}
+<div class="modal-content">
     <h2>Вход</h2>
-    {% if user.is_authenticated %}
-        <p>Вы уже выполнили вход</p>
-    {% else %}
-        <form action="post">
+        <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="hidden" name="next" id="" value="{{ next }}">
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <input type="hidden" name="text" value="{{ next }}">
+            <div class="form-error">{{ form.non_field_errors }}</div>
+            {% for f in form %}
+            <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+            <div class="form-error">{{ f.errors }}</div>
+            {% endfor %}
+            <p><button type="submit" class="btn btn-primary">Войти</button><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a></p>
         </form>
-    {% endif %}
+</div>
 {% endblock %}

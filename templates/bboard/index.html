@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for bb in bbs %}
-    <div class="{% cycle 'b1' 'b2' 'b3' %}">
+    <div class="b1">
         {% if forloop.first %}
             <h2 style="font-size: 36px;">
                 <a href="{% url 'bboard:detail' pk=bb.pk %}">

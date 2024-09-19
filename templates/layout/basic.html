@@ -14,25 +14,21 @@
 </head>
 <body>
 
-<header>
-    <h1>Объявления</h1>
-</header>
-
 {% include 'layout/inc/main_menu.html' %}
-
+{% include 'layout/inc/rubrics_menu.html' %}
 {% block net %}
 
-        {% endblock %}
-<section>
-    <div class="wrapper-center">
-        {% block content %}
+{% endblock %}
 
-        {% endblock %}
-                {% block da %}
+<div class="rubrics">
+    {% block content %}
 
-        {% endblock %}
-    </div>
-</section>
+    {% endblock %}
+    {% block da %}
+
+    {% endblock %}
+</div>
+
 
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

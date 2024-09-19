@@ -1,0 +1,10 @@
+{% extends "layout/basic.html" %}
+
+
+
+{% block title %}УРА{% endblock %}
+
+{% block net %}
+    <h2>Добро пожаловать!</h2>
+<p><a href="{% url 'registration:login' %}">Войти</a></p>
+{% endblock %}

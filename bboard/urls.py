@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from bboard.models import Bb
 from bboard.views import (index, BbCreateView,
                           BbByRubricView, BbDetailView,
-                          BbDeleteView, BbRedirectView, edit, RubCreateView, rubrics)
+                          BbDeleteView, BbRedirectView, edit, RubCreateView, rubrics,)
 
 app_name = 'bboard'
 

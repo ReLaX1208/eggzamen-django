@@ -1,4 +1,8 @@
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.forms.formsets import ORDERING_FIELD_NAME
@@ -15,12 +19,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
-from bboard.forms import BbForm, RubricFormSet, RubricForm
+from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm
 from bboard.models import Bb, Rubric
 
 
 def index(request):
-
     bbs = Bb.objects.order_by('-published')
     rubrics = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
 
@@ -46,7 +49,6 @@ class BbIndexView(ArchiveIndexView):
     template_name = 'bboard/index.html'
     context_object_name = 'bbs'
     allow_empty = True
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -77,13 +79,14 @@ class BbByRubricView(ListView):
         context['current_rubric'] = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         return context
 
-class RubCreateView(CreateView):
+
+class RubCreateView(LoginRequiredMixin, CreateView):
     template_name = 'bboard/create2.html'
     form_class = RubricForm
     success_url = reverse_lazy('bboard:index')
 
 
-class BbCreateView(CreateView):
+class BbCreateView(LoginRequiredMixin, CreateView):
     template_name = 'bboard/create.html'
     form_class = BbForm
     success_url = '/{rubric_id}'
@@ -94,7 +97,7 @@ class BbCreateView(CreateView):
         return context
 
 
-class BbEditView(UpdateView):
+class BbEditView(LoginRequiredMixin, UpdateView):
     model = Bb
     form_class = BbForm
     success_url = '/{rubric_id}'
@@ -104,6 +107,8 @@ class BbEditView(UpdateView):
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
 
+
+@login_required(login_url='login')
 def edit(request, pk):
     bb = Bb.objects.get(pk=pk)
     if request.method == 'POST':
@@ -111,16 +116,18 @@ def edit(request, pk):
         if bbf.is_valid():
             if bbf.has_changed():
                 bbf.save()
-            return HttpResponseRedirect(reverse('bboard:by_rubric', kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
+            return HttpResponseRedirect(
+                reverse('bboard:by_rubric', kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
         else:
             context = {'form': bbf}
             return render(request, 'bboard/bb_form.html', context)
     else:
         bbf = BbForm(instance=bb)
-        context = {'form':bbf}
+        context = {'form': bbf}
         return render(request, 'bboard/bb_form.html', context)
 
-class BbAddView(FormView):
+
+class BbAddView(LoginRequiredMixin, FormView):
     template_name = 'bboard/create.html'
     form_class = BbForm
     initial = {'price': 0.0}
@@ -181,13 +188,11 @@ class BbDetailView(DetailView):
         return context
 
 
-
-
 class BbRedirectView(RedirectView):
     url = '/detail/%(pk)d'
 
 
-class BbDeleteView(DeleteView):
+class BbDeleteView(LoginRequiredMixin, DeleteView):
     model = Bb
     success_url = reverse_lazy('bboard:index')
 
@@ -195,6 +200,8 @@ class BbDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
+
+
 @login_required(login_url='login')
 def rubrics(request):
     rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
@@ -222,3 +229,18 @@ def rubrics(request):
 
     context = {'formset': formset, 'rubrics': rubs}
     return render(request, 'bboard/rubrics.html', context)
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'registration/register.html'
+    extra_context = {'title': 'Регистрация'}
+    success_url = reverse_lazy('login')
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'registration/login.html'
+    extra_context = {'title': 'Авторизация'}
+    def get_success_url(self):
+        return reverse_lazy('bboard:index')
+
+

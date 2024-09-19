@@ -7,10 +7,7 @@ def is_active_default():
     return True
 
 
-def validate_even(val):
-    if val % 2 != 0:
-        raise ValidationError('Число %(value)s нечётное', code='odd',
-                              params={'value': val})
+
 
 
 class MinMaxValueValidator:
@@ -66,10 +63,7 @@ class Bb(models.Model):
                              )  # primary_key=True
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(max_digits=15, decimal_places=2,
-                                null=True, blank=True, verbose_name='Цена',
-                                validators=[validate_even,
-                                            # MinMaxValueValidator(100, 1_000_000)
-                                            ])
+                                null=True, blank=True, verbose_name='Цена',)
     published = models.DateTimeField(auto_now_add=True, db_index=True,
                                      verbose_name='Опубликовано')
     def title_and_price(self):

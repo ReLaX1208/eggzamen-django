@@ -4,12 +4,11 @@
 
 {% block title %}Добавление rubric{% endblock %}
 
-{% block net %}
+{% block content %}
 <h2>Добавление rubric</h2>
     <form method="post">
-{#    <form action="{% url 'bboard:add_save' %}" method="post"> #}
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Добавить</button>
+        <button type="submit" class="btn btn-primary">Добавить</button><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
     </form>
 {% endblock %}
