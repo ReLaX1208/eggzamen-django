@@ -6,10 +6,6 @@ from django.db import models
 def is_active_default():
     return True
 
-
-
-
-
 class MinMaxValueValidator:
     def __init__(self, min_value, max_value):
         self.min_value = min_value
@@ -23,10 +19,34 @@ class MinMaxValueValidator:
                                   params={'min': self.min_value, 'max': self.max_value})
 
 
+class RubricQuerySet(models.QuerySet):
+    def order_by_bb_count(self):
+        return super().annotate(
+            cnt=models.Count('bb')
+        ).order_by('-cnt')
+
+class RubricManager(models.Manager):
+    # def get_queryset(self):
+    #     return super().get_queryset().annotate(
+    #         cnt=models.Count('bb')
+    #     ).order_by('order', 'name')
+
+    # def order_by_bb_count(self):
+    #     return super().get_queryset().annotate(
+    #         cnt=models.Count('bb')
+    #     ).order_by('-cnt')
+
+    def get_queryset(self):
+        return RubricQuerySet(self.model, using=self._db)
+
+    def order_by_bb_count(self):
+        return self.get_queryset().order_by_bb_count()
 class Rubric(models.Model):
     name = models.CharField(max_length=20, db_index=True, unique=True,
                             verbose_name='Название')
     order = models.SmallIntegerField(default=0, db_index=True)
+    objects = models.Manager.from_queryset(RubricQuerySet)()
+    bbs = RubricManager()
 
     def __str__(self):
         return self.name
@@ -38,7 +58,15 @@ class Rubric(models.Model):
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
         ordering = ['name']
+class RevRubric(Rubric):
+    class Meta:
+        proxy = True
+        ordering = ['-order', '-name']
 
+
+class BbManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('price')
 class Bb(models.Model):
     KINDS = (
         (None, 'Выберите тип публикуемого объявления'),
@@ -66,6 +94,8 @@ class Bb(models.Model):
                                 null=True, blank=True, verbose_name='Цена',)
     published = models.DateTimeField(auto_now_add=True, db_index=True,
                                      verbose_name='Опубликовано')
+    objects = models.Manager()
+    by_price = BbManager()
     def title_and_price(self):
         if self.price:
             return f'{self.title} ({self.price:.2f})'

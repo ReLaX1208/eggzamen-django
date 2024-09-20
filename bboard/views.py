@@ -19,13 +19,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
-from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm
+from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm
 from bboard.models import Bb, Rubric
 
 
 def index(request):
     bbs = Bb.objects.order_by('-published')
-    rubrics = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
+    rubrics = Rubric.objects.all().order_by_bb_count()
 
     paginator = Paginator(bbs, 6)
 
@@ -71,7 +71,8 @@ class BbByRubricView(ListView):
     context_object_name = 'bbs'
 
     def get_queryset(self):
-        return Bb.objects.filter(rubric=self.kwargs['rubric_id'])
+        rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
+        return rubric.bb_set(manager='by_price').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,7 +108,8 @@ class BbEditView(LoginRequiredMixin, UpdateView):
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
 
-
+def commit_handler():
+    print('Транзакция закоммичена')
 @login_required(login_url='login')
 def edit(request, pk):
     bb = Bb.objects.get(pk=pk)
@@ -229,6 +231,23 @@ def rubrics(request):
 
     context = {'formset': formset, 'rubrics': rubs}
     return render(request, 'bboard/rubrics.html', context)
+def search(request):
+    if request.method == 'POST':
+        sf = SearchForm(request.POST)
+        if sf.is_valid():
+            keyword = sf.cleaned_data['keyword']
+            rubric_id = sf.cleaned_data['rubric'].pk
+            bbs = Bb.objects.filter(title__iregex=keyword,
+                                    rubric=rubric_id)
+
+            context = {'bbs': bbs, 'form': sf}
+            return render(request, 'bboard/search.html', context)
+    else:
+        sf = SearchForm()
+
+    context = {'form': sf}
+
+    return render(request, 'bboard/search.html', context)
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm

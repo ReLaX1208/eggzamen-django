@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+from tempfile import template
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'captcha',
+
     'bboard.apps.BboardConfig',
     'testapp',
 ]
@@ -133,3 +138,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'bboard:index'
 LOGOUT_REDIRECT_URL = 'bboard:index'
 LOGIN_URL = 'login'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.word_challenge'
+# CAPTCHA_LENGTH = 6
+CAPTCHA_WORDS_DICTIONARY = os.path.join(BASE_DIR, 'static', 'words.txt')
+# CAPTCHA_FONT_SIZE = 22
+# CAPTCHA_LETTER_ROTATION = (-35, 35)
+CAPTCHA_BACKGROUND_COLOR = '#001100'
+CAPTCHA_FOREGROUND_COLOR = '#ffffff'
+# CAPTCHA_IMAGE_SIZE = (150, 35)
+
+# DATA_UPLOAD_MAX_MEMORY_SIZE = 2_621_440  # 2.5 Mb

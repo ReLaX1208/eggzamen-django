@@ -9,6 +9,9 @@ from django.forms.widgets import Select, TextInput, PasswordInput
 from django import forms
 
 from bboard.models import Bb, Rubric
+from captcha.fields import CaptchaField
+
+
 
 
 class BbForm(ModelForm):
@@ -28,6 +31,12 @@ class BbForm(ModelForm):
                                     # required=False,
                                     # disabled=True,
                                     )
+    captcha = CaptchaField(label='Введите текст с картинки',
+                           error_messages={'invalid': 'Неправильный текст'},
+                           # generator='captcha.helpers.random_char_challenge',
+                           # generator='captcha.helpers.math_challenge',
+                           # generator='captcha.helpers.word_challenge',
+                           )
 
     def clean_title(self):
         val = self.cleaned_data['title']
@@ -82,7 +91,9 @@ RubricFormSet = modelformset_factory(
     formset=RubricBaseFormSet
 )
 
-
+class SearchForm(forms.Form):
+    keyword = forms.CharField(max_length=20, label='Искомое слово')
+    rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(), label='Рубрика')
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label="Логин", widget=TextInput(attrs={'class': 'form-input'}))
     password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))

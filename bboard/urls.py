@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from bboard.models import Bb
 from bboard.views import (index, BbCreateView,
                           BbByRubricView, BbDetailView,
-                          BbDeleteView, BbRedirectView, edit, RubCreateView, rubrics,)
+                          BbDeleteView, BbRedirectView, edit, RubCreateView, rubrics, search, )
 
 app_name = 'bboard'
 
@@ -18,4 +18,5 @@ urlpatterns = [
          BbRedirectView.as_view(), name='old_detail'),
     path('rubrics/', rubrics, name='rubrics'),
     path('', index, name='index'),
+    path('search/', search, name='search'),
 ]
