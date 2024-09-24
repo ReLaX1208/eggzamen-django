@@ -1,8 +1,8 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.forms.formsets import ORDERING_FIELD_NAME
@@ -19,7 +19,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
-from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm
+from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm, \
+    UserPasswordChangeForm, ProfileUserForm
 from bboard.models import Bb, Rubric
 
 
@@ -207,7 +208,6 @@ class BbDeleteView(LoginRequiredMixin, DeleteView):
 @login_required(login_url='login')
 def rubrics(request):
     rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
-
     if request.method == 'POST':
         formset = RubricFormSet(request.POST)
 
@@ -224,13 +224,13 @@ def rubrics(request):
             for rubric in formset.deleted_objects:
                 rubric.delete()
 
-            # formset.save()
             return redirect('bboard:index')
     else:
         formset = RubricFormSet()
 
     context = {'formset': formset, 'rubrics': rubs}
     return render(request, 'bboard/rubrics.html', context)
+
 def search(request):
     if request.method == 'POST':
         sf = SearchForm(request.POST)
@@ -262,4 +262,19 @@ class LoginUser(LoginView):
     def get_success_url(self):
         return reverse_lazy('bboard:index')
 
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("password_change_done")
+    template_name = "registration/password_change_form.html"
 
+class ProfileUser(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = ProfileUserForm
+    template_name = 'registration/profile.html'
+    extra_context = {'title': "Профиль пользователя"}
+
+    def get_success_url(self):
+        return reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user

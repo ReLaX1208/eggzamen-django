@@ -8,9 +8,10 @@
 {#    <p>Цена: {{ bb.price|default:'У товара нет цены'|floatformat:1 }} тг.</p>#}
     <p>Цена: {{ bb.price|default:'У товара нет цены' }} тг.</p>
     <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-    <p>
+    <p>{% if perms.catalog.can_create %}
         <a href="{% url 'bboard:update' bb.pk %}" class="btn btn-primary">Изменить</a> |
         <a href="{% url 'bboard:delete' bb.pk %}" class="btn btn-primary">Удалить</a>
+        {% endif %}
     </p>
     </div>
 {% endblock %}

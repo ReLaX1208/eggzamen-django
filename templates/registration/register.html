@@ -5,6 +5,7 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block net %}
+<div class="registration">
     <h2>Регистрация</h2>
     <form method="POST">
         {% csrf_token %}
@@ -12,4 +13,5 @@
         {{ form.as_p}}
         <p><button type="submit">Регистрация</button></p>
     </form>
+    </div>
 {% endblock %}

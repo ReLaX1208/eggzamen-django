@@ -123,3 +123,4 @@ class Bb(models.Model):
         verbose_name_plural = 'Объявления'
         ordering = ['-published', 'title']
         get_latest_by = 'published'
+        permissions = (("can_create", "Can create anything"),)

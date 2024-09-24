@@ -23,12 +23,13 @@ a{
     text-decoration:none;
 }
 .modal-content{
-    text-align:center;
-    margin:6% auto 15% auto;
-    width: 100%;
-    color:white;
-    background-color:transparent;
-
+    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
+    color: white;
+    text-align: center;
+    padding: 1px;
+    height: auto;
+    padding-top: 150px;
+    padding-bottom: 70px;
 }
 .header2{
     margin-top: 105px;
@@ -77,14 +78,15 @@ a{
 .paginator{
 width:300px;
 margin:0 auto;
+padding-top: 10px;
 }
 .b1 {
     width: 300px;
     height: 500px;
     display: inline-block;
     margin: 10px;
-  background-color:red;
-  vertical-align:top;
+    background-color:red;
+    vertical-align:top;
 }
 
 .rubrics {
@@ -97,7 +99,23 @@ margin:0 auto;
     padding-bottom: 70px;
 }
 section{
-position: relative;
+    position: relative;
     overflow: hidden;
     height: 100%;
+}
+p{
+    color:white;
+}
+.pagination{
+    padding-left: 38px;
+    padding-top: 10px;
+}
+.registration{
+    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
+    color: white;
+    text-align: center;
+    padding: 1px;
+    height: auto;
+    padding-top: 150px;
+    padding-bottom: 70px;
 }
