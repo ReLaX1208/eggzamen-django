@@ -6,9 +6,9 @@
 
 {% block content %}
 <h2>Добавление объявления</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data" class="loginform">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Добавить</button><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
+        <button type="submit" class="btn btn-primary">Добавить</button> | <a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
     </form>
 {% endblock %}

@@ -12,26 +12,15 @@ from bboard.models import Bb, Rubric
 from captcha.fields import CaptchaField
 
 
-
-
 class BbForm(ModelForm):
     title = forms.CharField(
         label='Название товара',
-        #         validators=[validators.RegexValidator(regex='^.{4,}$')],
-        #         error_messages={'invalid': 'Слишком короткое название товара'},
         strip=True)
-    # content = forms.CharField(label='Описание',
-    #                           widget=forms.widgets.Textarea())
     price = forms.DecimalField(label='Цена', decimal_places=2, initial=0.0)
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(),
                                     label='Рубрика',
-                                    # label_suffix=':',
                                     help_text='Не забудьте выбрать рубрику!',
-                                    widget=forms.widgets.Select(attrs={'size': 4}),
-                                    # required=False,
-                                    # disabled=True,
                                     )
-
 
     def clean_title(self):
         val = self.cleaned_data['title']
@@ -56,12 +45,12 @@ class BbForm(ModelForm):
 
     class Meta:
         model = Bb
-        fields = ('title', 'content', 'price', 'rubric')
+        fields = ('title', 'content', 'photo', 'price', 'rubric')
         labels = {'title': 'Название товара'},
 
 
 class RubricForm(ModelForm):
-    name = forms.CharField(label='Nazvanie')
+    name = forms.CharField(label='Название рубрики')
 
     class Meta:
         model = Rubric
@@ -86,29 +75,31 @@ RubricFormSet = modelformset_factory(
     formset=RubricBaseFormSet
 )
 
+
 class SearchForm(forms.Form):
     keyword = forms.CharField(max_length=20, label='Искомое слово')
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(), label='Рубрика')
+
+
 class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label="Логин", widget=TextInput(attrs={'class': 'form-input'}))
-    password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    password2 = forms.CharField(label="Повтор пароля", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    captcha = CaptchaField(label='Введите текст с картинки',
-                           error_messages={'invalid': 'Неправильный текст'},
-                           )
+    username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Логин'}))
+    password1 = forms.CharField(label='',widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}))
+    password2 = forms.CharField(label='',widget=forms.PasswordInput(attrs={'placeholder': 'Повтор пароля'}))
+    captcha = CaptchaField(label='Введите код с картинки', error_messages={'invalid': 'Неправильный текст'})
+
 
     class Meta:
         model = get_user_model()
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
         labels = {
-            'email': 'E-mail',
-            'first_name': 'Имя',
-            'last_name': "Фамилия",
+            'email': '',
+            'first_name': '',
+            'last_name': '',
         }
         widgets = {
-            'email': TextInput(attrs={'class': 'form-input'}),
-            'first_name': TextInput(attrs={'class': 'form-input'}),
-            'last_name': TextInput(attrs={'class': 'form-input'}),
+            'email': TextInput(attrs={'placeholder': 'Email'}),
+            'first_name': TextInput(attrs={'placeholder': 'Имя'}),
+            'last_name': TextInput(attrs={'placeholder': 'Фамилия'}),
         }
 
     def clean_email(self):
@@ -119,17 +110,20 @@ class RegisterUserForm(UserCreationForm):
 
 
 class LoginUserForm(AuthenticationForm):
-    username = forms.CharField(label='Login', widget=TextInput(attrs={'class': 'form-input'}))
-    password = forms.CharField(label='Password', widget=PasswordInput(attrs={'class': 'form-input'}))
+    username = forms.CharField(label='', widget=TextInput(attrs={'placeholder': 'Логин'}))
+    password = forms.CharField(label='', widget=PasswordInput(attrs={'placeholder': 'Пароль'}))
 
     class Meta:
         model = get_user_model()
         fields = ['username', 'password']
 
+
 class UserPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label="Старый пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     new_password1 = forms.CharField(label="Новый пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    new_password2 = forms.CharField(label="Подтверждение пароля", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    new_password2 = forms.CharField(label="Подтверждение пароля",
+                                    widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
 
 class ProfileUserForm(forms.ModelForm):
     username = forms.CharField(disabled=True, label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
@@ -147,3 +141,6 @@ class ProfileUserForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-input'}),
         }
 
+
+class UploadFileForm(forms.Form):
+    file = forms.ImageField(label="Файл")

@@ -20,8 +20,8 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
 from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm, \
-    UserPasswordChangeForm, ProfileUserForm
-from bboard.models import Bb, Rubric
+    UserPasswordChangeForm, ProfileUserForm, UploadFileForm
+from bboard.models import Bb, Rubric, UploadFiles
 
 
 def index(request):
@@ -109,13 +109,17 @@ class BbEditView(LoginRequiredMixin, UpdateView):
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
 
+
 def commit_handler():
     print('Транзакция закоммичена')
+
+
+@require_http_methods(['GET', 'POST'])
 @login_required(login_url='login')
 def edit(request, pk):
     bb = Bb.objects.get(pk=pk)
     if request.method == 'POST':
-        bbf = BbForm(request.POST, instance=bb)
+        bbf = BbForm(request.POST, request.FILES, instance=bb, )
         if bbf.is_valid():
             if bbf.has_changed():
                 bbf.save()
@@ -156,12 +160,10 @@ class BbAddView(LoginRequiredMixin, FormView):
 @require_http_methods(['GET', 'POST'])
 def add_and_save(request):
     if request.method == 'POST':
-        bbf = BbForm(request.POST)
+        bbf = BbForm(request.POST, request.FILES)
 
         if bbf.is_valid():
             bbf.save()
-            # return HttpResponseRedirect(reverse('bboard:by_rubric',
-            #     kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
             return redirect('bboard:by_rubric',
                             rubric_id=bbf.cleaned_data['rubric'].pk)
         else:
@@ -231,6 +233,7 @@ def rubrics(request):
     context = {'formset': formset, 'rubrics': rubs}
     return render(request, 'bboard/rubrics.html', context)
 
+
 def search(request):
     if request.method == 'POST':
         sf = SearchForm(request.POST)
@@ -249,23 +252,28 @@ def search(request):
 
     return render(request, 'bboard/search.html', context)
 
+
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'registration/register.html'
     extra_context = {'title': 'Регистрация'}
     success_url = reverse_lazy('login')
 
+
 class LoginUser(LoginView):
     form_class = LoginUserForm
     template_name = 'registration/login.html'
     extra_context = {'title': 'Авторизация'}
+
     def get_success_url(self):
         return reverse_lazy('bboard:index')
+
 
 class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
     success_url = reverse_lazy("password_change_done")
     template_name = "registration/password_change_form.html"
+
 
 class ProfileUser(LoginRequiredMixin, UpdateView):
     model = get_user_model()
@@ -278,3 +286,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+def about(request):
+    return render(request, 'bboard/about.html')

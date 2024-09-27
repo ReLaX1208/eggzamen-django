@@ -13,9 +13,9 @@
 
 </head>
 <body>
-
 {% include 'layout/inc/main_menu.html' %}
-{% include 'layout/inc/rubrics_menu.html' %}
+<!--{% include 'layout/inc/rubrics_menu.html' %}-->
+
 {% block net %}
 
 {% endblock %}
@@ -28,10 +28,7 @@
 
     {% endblock %}
 </div>
-
-
-
+{% include 'layout/inc/footer.html' %}
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-
 </body>
 </html>

@@ -6,6 +6,7 @@ from django.db import models
 def is_active_default():
     return True
 
+
 class MinMaxValueValidator:
     def __init__(self, min_value, max_value):
         self.min_value = min_value
@@ -25,22 +26,16 @@ class RubricQuerySet(models.QuerySet):
             cnt=models.Count('bb')
         ).order_by('-cnt')
 
-class RubricManager(models.Manager):
-    # def get_queryset(self):
-    #     return super().get_queryset().annotate(
-    #         cnt=models.Count('bb')
-    #     ).order_by('order', 'name')
 
-    # def order_by_bb_count(self):
-    #     return super().get_queryset().annotate(
-    #         cnt=models.Count('bb')
-    #     ).order_by('-cnt')
+class RubricManager(models.Manager):
 
     def get_queryset(self):
         return RubricQuerySet(self.model, using=self._db)
 
     def order_by_bb_count(self):
         return self.get_queryset().order_by_bb_count()
+
+
 class Rubric(models.Model):
     name = models.CharField(max_length=20, db_index=True, unique=True,
                             verbose_name='Название')
@@ -58,6 +53,8 @@ class Rubric(models.Model):
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
         ordering = ['name']
+
+
 class RevRubric(Rubric):
     class Meta:
         proxy = True
@@ -67,6 +64,8 @@ class RevRubric(Rubric):
 class BbManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().order_by('price')
+
+
 class Bb(models.Model):
     KINDS = (
         (None, 'Выберите тип публикуемого объявления'),
@@ -91,11 +90,15 @@ class Bb(models.Model):
                              )  # primary_key=True
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(max_digits=15, decimal_places=2,
-                                null=True, blank=True, verbose_name='Цена',)
+                                null=True, blank=True, verbose_name='Цена', )
     published = models.DateTimeField(auto_now_add=True, db_index=True,
                                      verbose_name='Опубликовано')
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", default=None,
+                              blank=True, verbose_name="Фото")
+
     objects = models.Manager()
     by_price = BbManager()
+
     def title_and_price(self):
         if self.price:
             return f'{self.title} ({self.price:.2f})'
@@ -124,3 +127,7 @@ class Bb(models.Model):
         ordering = ['-published', 'title']
         get_latest_by = 'published'
         permissions = (("can_create", "Can create anything"),)
+
+
+class UploadFiles(models.Model):
+    file = models.FileField(upload_to='uploads_model')

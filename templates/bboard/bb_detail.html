@@ -4,8 +4,11 @@
     <div class="modal-content">
     <p>Рубрика: {{ bb.rubric.name }}</p>
     <h2>{{ bb.title }}</h2>
+
     <p>{{ bb.content }}</p>
-{#    <p>Цена: {{ bb.price|default:'У товара нет цены'|floatformat:1 }} тг.</p>#}
+{% if bb.photo %}
+    <p><img class="imgindetail" src="{{bb.photo.url}}"></p>
+{% endif %}
     <p>Цена: {{ bb.price|default:'У товара нет цены' }} тг.</p>
     <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
     <p>{% if perms.catalog.can_create %}

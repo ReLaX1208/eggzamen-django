@@ -6,8 +6,8 @@
 
 {% block net %}
 <div class="registration">
-    <h2>Регистрация</h2>
-    <form method="POST">
+    <form method="POST" class="registerform">
+        <h2>Регистрация</h2>
         {% csrf_token %}
         <input type="hidden" name="text" value="{{ next }}" />
         {{ form.as_p}}

@@ -8,7 +8,7 @@
 {% block content %}
 <h2>Поиск объявлений</h2>
 
-    <form method="post">
+    <form method="post" class="loginform">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Найти</button>

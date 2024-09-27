@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2>Рубрики</h2>
-    <form method="post">
+    <form method="post" class="loginform">
         {% csrf_token %}
     
         {{ formset.management_form }}

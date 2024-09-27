@@ -15,12 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from tempfile import template
+
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import path, include, reverse_lazy
 
 from bboard.views import LoginUser, RegisterUser, UserPasswordChange, ProfileUser
+from samplesite import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,3 +53,4 @@ urlpatterns = [
 urlpatterns += [
     path('captcha/', include('captcha.urls')),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

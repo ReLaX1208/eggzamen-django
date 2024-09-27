@@ -2,6 +2,7 @@
     <div class="inner_header">
         <div class="nav">
             <a href="{% url 'bboard:index' %}"><li>Главная</li></a>
+            <a href="{% url 'bboard:about' %}"><li>О нас</li></a>
             {% if user.is_anonymous %}
             {% else %}
             {% if perms.catalog.can_create %}
