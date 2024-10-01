@@ -210,6 +210,7 @@ class BbDeleteView(LoginRequiredMixin, DeleteView):
 @login_required(login_url='login')
 def rubrics(request):
     rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
+
     if request.method == 'POST':
         formset = RubricFormSet(request.POST)
 
@@ -226,7 +227,7 @@ def rubrics(request):
             for rubric in formset.deleted_objects:
                 rubric.delete()
 
-            return redirect('bboard:index')
+            return redirect('bboard:rubrics')
     else:
         formset = RubricFormSet()
 

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'captcha',
     'bboard.apps.BboardConfig',
     'testapp',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

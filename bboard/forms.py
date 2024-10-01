@@ -64,9 +64,9 @@ class RubricBaseFormSet(BaseModelFormSet):
         names = [form.cleaned_data['name'] for form in self.forms
                  if 'name' in form.cleaned_data]
 
-        if ('Недвижимость' not in names) or ('Транспорт' not in names) \
-                or ('Мебель' not in names):
-            raise ValidationError('Добавьте рубрики недвижимость, транспорт и мебель')
+        if ('Недвижимость' not in names) or ('adas' not in names) \
+                or ('jjkkjkn' not in names):
+            raise ValidationError('da')
 
 
 RubricFormSet = modelformset_factory(

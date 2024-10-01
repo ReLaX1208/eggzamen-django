@@ -1,5 +1,5 @@
 {% extends "layout/basic.html" %}
-
+{% load django_bootstrap5 %}
 
 
 {% block title %}Добавление рубрики{% endblock %}
@@ -8,7 +8,7 @@
 <h2>Добавление рубрики</h2>
     <form method="post" class="loginform">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Добавить</button><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
+        {% bootstrap_form form layout='horizontal' show_help=False size='sm' %}
+        {% bootstrap_button 'Добавить' %}
     </form>
 {% endblock %}

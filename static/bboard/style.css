@@ -1,7 +1,6 @@
 body{
     line-height: 1.5;
-    font-family: 'Poppins', sans-serif;
-    background-color: #24262b;
+    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
 }
 .nav{
     float: right;
@@ -104,7 +103,14 @@ position: relative;
     text-align: center;
     padding: 1px;
     height: auto;
-    padding-top: 120px;
+    padding-top: 150px;
+}
+.rubrica{
+width: 300px;
+    height: 200px;
+    display: inline-block;
+    margin: 10px;
+    vertical-align:top;
 }
 section{
     position: relative;
@@ -183,6 +189,7 @@ max-width: 1170px;
     margin: auto;
 }
 .row{
+width:100%;
 display: flex;
     flex-wrap: wrap;
 }
@@ -224,4 +231,58 @@ padding:0;
     height: 2px;
     box-sizing: border-box;
     width: 50px;
+}
+.container_s{
+    margin: 0;
+    width: auto;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+.aboutus{
+    width: 20%;
+    background-color: rgb(0, 0, 0, 1);
+    position: fixed;
+    position: absolute;
+    text-align: center;
+    top: 128px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    left: 74%;
+    color: white;
+}
+.centered{
+    width: 25%;
+    height: 73%;
+    position: absolute;
+    top: 58%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+    color: rgb(0, 0, 0);
+    padding: 70px 30px 30px 30px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+iframe{
+position:absolute;
+}
+.column{
+float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+}
+.card{
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+}
+.container32{
+    padding: 0 16px;
+}
+.title{
+color: grey;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

@@ -5,7 +5,7 @@
 
 {% block content %}
     {% for bb in bbs %}
-    <div>
+    <div class="rubrica">
         {% url 'bboard:detail' bb.pk as detail_url %}
         <h2>
             {{ forloop.counter }}. <a href="{{ detail_url }}">{{ bb.title }}</a>({{ bb.price }} тг.)
