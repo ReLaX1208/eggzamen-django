@@ -54,7 +54,7 @@ class RubricForm(ModelForm):
 
     class Meta:
         model = Rubric
-        fields = {'name'}
+        fields = {'name', 'photo'}
         labels = {'name': 'Nazvanie'}
 
 
@@ -64,14 +64,10 @@ class RubricBaseFormSet(BaseModelFormSet):
         names = [form.cleaned_data['name'] for form in self.forms
                  if 'name' in form.cleaned_data]
 
-        if ('Недвижимость' not in names) or ('adas' not in names) \
-                or ('jjkkjkn' not in names):
-            raise ValidationError('da')
-
 
 RubricFormSet = modelformset_factory(
     Rubric, fields=('name',),
-    can_order=True, can_delete=True, extra=2,
+    can_delete=True,
     formset=RubricBaseFormSet
 )
 
@@ -83,10 +79,9 @@ class SearchForm(forms.Form):
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Логин'}))
-    password1 = forms.CharField(label='',widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}))
-    password2 = forms.CharField(label='',widget=forms.PasswordInput(attrs={'placeholder': 'Повтор пароля'}))
+    password1 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}))
+    password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Повтор пароля'}))
     captcha = CaptchaField(label='Введите код с картинки', error_messages={'invalid': 'Неправильный текст'})
-
 
     class Meta:
         model = get_user_model()

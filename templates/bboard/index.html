@@ -2,33 +2,17 @@
 
 {% block content %}
 <h1>НАШИ САМЫЕ ПОПУЛЯРНЫЕ БРЕНДЫ</h1>
-    {% for bb in bbs %}
-    <div class="b1">
-        {% if forloop.first %}
-            <h2 style="font-size: 36px;">
-                <a href="{% url 'bboard:detail' pk=bb.pk %}">
-                    {{ bb.title|upper }}</a>
-            </h2>
-        {% else %}
 
-            <h2>
-                <a href="{% url 'bboard:detail' pk=bb.pk %}">{{ bb.title}}</a>
-            </h2>
+        {% for rubric in rubrics %}
+            <div class="b1">
+            <a href="{{ rubric.get_absolute_url }}" class="clickable-div">
+            {% if rubric.photo %}
+            <p class="text-on-top"><img class="imginindex" src="{{rubric.photo.url}}"></p>
         {% endif %}
 
-            <p>{{ bb.content }}</p>
+    </a></div>
+{% endfor %}
 
-        {% ifchanged %}
-            <p><a href="{% url 'bboard:by_rubric' bb.rubric.pk %}">
-                {{ bb.rubric.name }}</a></p>
-        {% endifchanged %}
-                {% if bb.photo %}
-            <p><img class="imginindex" src="{{bb.photo.url}}"></p>
-        {% endif %}
-        <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-    </div>
-
-    {% endfor %}
 
 {% endblock %}
     {% block da %}

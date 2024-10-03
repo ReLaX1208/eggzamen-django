@@ -37,7 +37,6 @@ def index(request):
 
     page = paginator.get_page(page_num)
 
-    # context = {'bbs': bbs, 'rubrics': rubrics}
     context = {'rubrics': rubrics, 'bbs': page.object_list, 'page': page}
 
     return render(request, 'bboard/index.html', context)
@@ -112,6 +111,20 @@ class BbEditView(LoginRequiredMixin, UpdateView):
 
 def commit_handler():
     print('Транзакция закоммичена')
+
+
+@require_http_methods(['GET', 'POST'])
+@login_required(login_url='login')
+def edit_rubric(request, pk):
+    rubric = Rubric.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = RubricForm(request.POST, request.FILES, instance=rubric)
+        if form.is_valid():
+            form.save()
+            return redirect('bboard:index')
+    else:
+        form = RubricForm(instance=rubric)
+    return render(request, 'bboard/edit_rubric.html', {'form': form})
 
 
 @require_http_methods(['GET', 'POST'])
@@ -207,31 +220,33 @@ class BbDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
 
+class RubricDeleteView(LoginRequiredMixin, DeleteView):
+    model = Rubric
+    success_url = reverse_lazy('bboard:index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rubric'] = Rubric.objects.get(name="Транспорт")
+        return context
+
+
 @login_required(login_url='login')
+@require_http_methods(['GET', 'POST'])
 def rubrics(request):
-    rubs = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
+    bbs = Bb.objects.order_by('-published')
+    rubrics = Rubric.objects.all().order_by_bb_count()
 
-    if request.method == 'POST':
-        formset = RubricFormSet(request.POST)
+    paginator = Paginator(bbs, 6)
 
-        if formset.is_valid():
-
-            formset.save(commit=False)
-
-            for form in formset:
-                if form.cleaned_data:
-                    rubric = form.save(commit=False)
-                    rubric.order = form.cleaned_data[ORDERING_FIELD_NAME]
-                    rubric.save()
-
-            for rubric in formset.deleted_objects:
-                rubric.delete()
-
-            return redirect('bboard:rubrics')
+    if 'page' in request.GET:
+        page_num = request.GET['page']
     else:
-        formset = RubricFormSet()
+        page_num = 1
 
-    context = {'formset': formset, 'rubrics': rubs}
+    page = paginator.get_page(page_num)
+
+    context = {'rubrics': rubrics, 'bbs': page.object_list, 'page': page}
+
     return render(request, 'bboard/rubrics.html', context)
 
 

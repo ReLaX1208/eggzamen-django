@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2>Добавление рубрики</h2>
-    <form method="post" class="loginform">
+    <form method="post" enctype="multipart/form-data" class="loginform">
         {% csrf_token %}
         {% bootstrap_form form layout='horizontal' show_help=False size='sm' %}
         {% bootstrap_button 'Добавить' %}

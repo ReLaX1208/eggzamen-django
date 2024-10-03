@@ -1,53 +1,21 @@
-
 {% extends "layout/basic.html" %}
 
 
-{% block title %}Рубрики{% endblock %}
-
 {% block content %}
-<h2>Рубрики</h2>
-    <form method="post" class="loginform">
-        {% csrf_token %}
-
-        {{ formset.management_form }}
-
-        {% if formset.non_form_errors %}
-            <ul>
-            {% for error in formset.non_form_errors %}
-                <li><em>{{ error|escape }}</em></li>
-            {% endfor %}
-            </ul>
+{% for rubric in rubrics %}
+    <h2>{{rubric.name}}</h2>
+            <div class="b1">
+            <a href="{{ rubric.get_absolute_url }}" class="clickable-div">
+            {% if rubric.photo %}
+            <p class="text-on-top"><img class="imginindex" src="{{rubric.photo.url}}"></p>
         {% endif %}
 
-        {% for form in formset %}
-
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-
-            {% if form.non_field_errors %}
-                <ul>
-                {% for error in form.non_field_errors %}
-                    <li><em>{{ error|escape }}</em></li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-
-            {% for field in form.visible_fields %}
-                {% if field.errors %}
-                    <ul>
-                    {% for error in field.errors %}
-                        <li><em>{{ error|escape }}</em></li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-
-                <p>{{ field.label_tag }}<br>{{ field }}<br>
-                   {{ field.help_text }}</p>
-            {% endfor %}
-
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-    </form>
+    </a>
+        <p><a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn btn-primary">Изменить</a>
+            <a href="{{ rubric.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+            </a></p>
+    </div>
+    {% empty %}
+        <h2>Рубрик нет</h2>
+    {% endfor %}
 {% endblock %}

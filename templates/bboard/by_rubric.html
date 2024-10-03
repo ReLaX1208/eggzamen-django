@@ -1,16 +1,18 @@
 {% extends "layout/basic.html" %}
 
 
-{% block title %}{{ current_rubric }}{% endblock %}
-
 {% block content %}
+<h2>{{ current_rubric }}</h2>
     {% for bb in bbs %}
     <div class="rubrica">
         {% url 'bboard:detail' bb.pk as detail_url %}
         <h2>
-            {{ forloop.counter }}. <a href="{{ detail_url }}">{{ bb.title }}</a>({{ bb.price }} тг.)
+            <a href="{{ detail_url }}">{{ bb.title }}</a>
         </h2>
         <p>{{ bb.content }}</p>
+        {% if bb.photo %}
+            <p><img class="imgindetail" src="{{bb.photo.url}}"></p>
+        {% endif %}
         <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
         <p><a href="{{ detail_url }}" class="btn btn-primary">Подробнее</a><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a></p>
     </div>

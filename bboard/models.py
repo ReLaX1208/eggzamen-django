@@ -39,7 +39,8 @@ class RubricManager(models.Manager):
 class Rubric(models.Model):
     name = models.CharField(max_length=20, db_index=True, unique=True,
                             verbose_name='Название')
-    order = models.SmallIntegerField(default=0, db_index=True)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", null=True, default=None,
+                              blank=True, verbose_name="Фото")
     objects = models.Manager.from_queryset(RubricQuerySet)()
     bbs = RubricManager()
 
@@ -52,13 +53,7 @@ class Rubric(models.Model):
     class Meta:
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
-
-
-
-class RevRubric(Rubric):
-    class Meta:
-        proxy = True
-        ordering = ['-order', '-name']
+        ordering = ['name', '-photo'    ]
 
 
 class BbManager(models.Manager):
@@ -87,7 +82,7 @@ class Bb(models.Model):
                                  )
                              ],
                              error_messages={'invalid': 'Неправильное название товара!'}
-                             )  # primary_key=True
+                             )
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(max_digits=15, decimal_places=2,
                                 null=True, blank=True, verbose_name='Цена', )
