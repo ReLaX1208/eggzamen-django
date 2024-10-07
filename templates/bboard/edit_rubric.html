@@ -8,7 +8,6 @@
     <form method="post" enctype="multipart/form-data" class="loginform">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Изменить</button> |
-        <a href="{% url 'bboard:delete_rubric' rubric.pk %}" class="btn btn-primary">Удалить</a>
+        <button type="submit" class="btn btn-primary">Изменить</button>
     </form>
 {% endblock %}

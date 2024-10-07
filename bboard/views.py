@@ -224,10 +224,8 @@ class RubricDeleteView(LoginRequiredMixin, DeleteView):
     model = Rubric
     success_url = reverse_lazy('bboard:index')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['rubric'] = Rubric.objects.get(name="Транспорт")
-        return context
+    def get_object(self, queryset=None):
+        return Rubric.objects.get(pk=self.kwargs['pk'])
 
 
 @login_required(login_url='login')
