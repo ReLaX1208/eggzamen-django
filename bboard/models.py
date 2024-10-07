@@ -1,6 +1,7 @@
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
+from precise_bbcode.fields import BBCodeTextField
 
 
 def is_active_default():
@@ -83,7 +84,7 @@ class Bb(models.Model):
                              ],
                              error_messages={'invalid': 'Неправильное название товара!'}
                              )
-    content = models.TextField(null=True, blank=True, verbose_name='Описание')
+    content = BBCodeTextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(max_digits=15, decimal_places=2,
                                 null=True, blank=True, verbose_name='Цена', )
     published = models.DateTimeField(auto_now_add=True, db_index=True,
