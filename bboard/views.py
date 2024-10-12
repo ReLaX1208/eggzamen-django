@@ -124,7 +124,7 @@ def edit_rubric(request, pk):
             return redirect('bboard:index')
     else:
         form = RubricForm(instance=rubric)
-    return render(request, 'bboard/edit_rubric.html', {'form': form})
+    return render(request, 'bboard/edit_rubric.html', {'form': form, 'rubric': rubric})
 
 
 @require_http_methods(['GET', 'POST'])
@@ -224,8 +224,13 @@ class RubricDeleteView(LoginRequiredMixin, DeleteView):
     model = Rubric
     success_url = reverse_lazy('bboard:index')
 
-    def get_object(self, queryset=None):
-        return Rubric.objects.get(pk=self.kwargs['pk'])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rubric'] = Rubric.objects.get(pk=self.kwargs['pk'])
+        return context
+
+    # def get_object(self, queryset=None):
+    #     return Rubric.objects.get(pk=self.kwargs['pk'])
 
 
 @login_required(login_url='login')
