@@ -54,8 +54,16 @@ class Rubric(models.Model):
     class Meta:
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
-        ordering = ['name', '-photo']
+        ordering = ['-photo', 'name']
 
+from django.db import models
+from easy_thumbnails.fields import ThumbnailerImageField
+
+class MyImageModel(models.Model):
+    image = ThumbnailerImageField(upload_to='images/')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class BbManager(models.Manager):
     def get_queryset(self):

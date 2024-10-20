@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'bboard.apps.BboardConfig',
     'testapp',
     'django_bootstrap5',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
