@@ -21,9 +21,11 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import path, include, reverse_lazy
+from django.views.decorators.cache import never_cache
 
 from bboard.views import LoginUser, RegisterUser, ProfileUser, UserForgotPasswordView, UserPasswordResetConfirmView
 from samplesite import settings
+from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,3 +42,7 @@ urlpatterns += [
     path('captcha/', include('captcha.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns.append(path('static/<path:path>', never_cache(serve)))

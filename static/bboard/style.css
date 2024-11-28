@@ -94,7 +94,10 @@ position: relative;
     display: inline-block;
     margin: 30px;
 }
-
+.submit{
+width:20px;
+height:20px;
+}
 .rubrics {
    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
     color: white;
