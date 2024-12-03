@@ -23,13 +23,15 @@ from django.contrib.auth.views import LogoutView, PasswordChangeDoneView, Passwo
 from django.urls import path, include, reverse_lazy
 from django.views.decorators.cache import never_cache
 
-from bboard.views import LoginUser, RegisterUser, ProfileUser, UserForgotPasswordView, UserPasswordResetConfirmView
+from bboard.views import LoginUser, RegisterUser, ProfileUser, UserForgotPasswordView, UserPasswordResetConfirmView, \
+    RubricListView, BbApiByRubricView
 from samplesite import settings
 from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('api/v1/rubrics/<int:rubric_id>/bbs/', BbApiByRubricView.as_view(), name='bbs-by-rubric'),
+    path('api/v1/rubricslist/', RubricListView.as_view(), name='rubric-list'),
     path('accounts/login/', LoginUser.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/register/', RegisterUser.as_view(), name='register'),

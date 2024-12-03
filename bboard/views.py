@@ -19,11 +19,17 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm, \
     ProfileUserForm, UploadFileForm, UserSetNewPasswordForm, UserForgotPasswordForm
 from bboard.models import Bb, Rubric, UploadFiles
 from django.contrib import messages
+
+from bboard.serializers import RubricSerializer, BbSerializer
 
 
 def index(request):
@@ -53,11 +59,10 @@ class BbIndexView(ArchiveIndexView):
         return context
 
 
-
-
 class BbByRubricView(ListView):
     template_name = 'bboard/by_rubric.html'
     context_object_name = 'bbs'
+
     def get_queryset(self):
         rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         return rubric.bb_set(manager='by_price').all()
@@ -76,12 +81,46 @@ class BbByRubricView(ListView):
         return context
 
 
+class CustomPagination(PageNumberPagination):
+    page_size = 6
+
+
+class BbApiByRubricView(generics.ListAPIView):
+    serializer_class = BbSerializer
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        rubric_id = self.kwargs['rubric_id']
+        return Bb.objects.filter(rubric_id=rubric_id).order_by('price')  # Assuming 'price' is the field to order by
+
+    def get(self, request, *args, **kwargs):
+        # Get the queryset and paginate it
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        # Get the rubrics for the context
+        rubrics = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
+        current_rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
+
+        # Serialize the paginated bbs
+        serializer = self.get_serializer(page, many=True)
+
+        response_data = {
+            'current_rubric': {
+                'id': current_rubric.id,
+                'name': current_rubric.name,
+            },
+            'bbs': serializer.data,
+        }
+
+        return Response(response_data)
+
+
 class RubCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'bboard/create2.html'
     form_class = RubricForm
     success_url = reverse_lazy('bboard:index')
     success_message = 'Рубрика "%(name)s" создано'
-
 
 
 class BbCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -94,6 +133,7 @@ class BbCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.annotate(cnt=Count('bb')).filter(cnt__gt=0)
         return context
+
 
 class BbEditView(LoginRequiredMixin, UpdateView):
     model = Bb
@@ -119,7 +159,7 @@ def edit_rubric(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Рубрика исправлена!',
-                                 extra_tags='alert alert-success')
+                             extra_tags='alert alert-success')
             return redirect('bboard:index')
     else:
         form = RubricForm(instance=rubric)
@@ -232,6 +272,16 @@ class RubricDeleteView(LoginRequiredMixin, DeleteView):
         context['rubric'] = Rubric.objects.get(pk=self.kwargs['pk'])
         return context
 
+
+class RubricListView(generics.ListAPIView):
+    queryset = Rubric.objects.order_by_bb_count()
+    serializer_class = RubricSerializer
+    pagination_class = CustomPagination
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bbs'] = Bb.objects.order_by('-published')
+        return context
 
 
 @login_required(login_url='login')

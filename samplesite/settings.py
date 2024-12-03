@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'testapp',
     'precise_bbcode',
     'django_bootstrap5',
+    'rest_framework',
 ]
 
 SITE_ID = 1
@@ -84,12 +85,24 @@ WSGI_APPLICATION = 'samplesite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "django_db",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
+        }
+    }
 
 
 # Password validation
@@ -149,6 +162,22 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'bboard.authentication.EmailAuthBackend',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_URLS_REGEX = r'^/api/.*$'
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.IsAdminUser',
+        # 'rest_framework.permissions.DjangoModelPermissions',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 LOGGING = {
     'version': 1,
     'filters': {
@@ -193,11 +222,6 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'INFO',
             'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['file_error'],
-            'level': 'ERROR',
-            'propagate': False,
         },
     },
 }

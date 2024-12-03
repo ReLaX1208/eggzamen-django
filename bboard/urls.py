@@ -4,7 +4,7 @@ from bboard.models import Bb
 from bboard.views import (index, BbCreateView,
                           BbByRubricView, BbDetailView,
                           BbDeleteView, BbRedirectView, edit, RubCreateView, rubrics, about,
-                          edit_rubric, RubricDeleteView, Search, )
+                          edit_rubric, RubricDeleteView, Search,)
 
 app_name = 'bboard'
 

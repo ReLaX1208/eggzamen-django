@@ -9,13 +9,13 @@ from django.utils.safestring import mark_safe
 
 class BbAdmin(admin.ModelAdmin):
     list_display = ('title', 'content', 'price', 'post_photo', 'published', 'rubric')
-    list_display_links = ('title', 'content')
+    list_display_links = ('title', 'content',)
     search_fields = ('title', 'content')
     list_filter = ('published', 'rubric')
     list_editable = ('price',)
 
-    fields = ('title', 'content', 'price', 'post_photo', 'published', 'rubric')
-    readonly_fields = ('post_photo',)
+    fields = ('title', 'content', 'price', 'photo', 'published', 'rubric')
+    readonly_fields = ('published', 'post_photo')
 
     def post_photo(self, bb: Bb):
         if bb.photo:
