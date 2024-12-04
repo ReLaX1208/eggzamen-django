@@ -27,8 +27,8 @@
     {% endif %}
 
 {% block net %}
-
 {% endblock %}
+
 
 <div class="rubrics">
     {% block content %}
@@ -38,7 +38,25 @@
 
     {% endblock %}
 </div>
+
 {% include 'layout/inc/footer.html' %}
 {% bootstrap_javascript %}
+<script>
+       var imgs = document.querySelectorAll('.slider img');
+        var currentImg = 0;
+        const interval = 2000;
+
+        function changeSlide() {
+            for (var i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove('active');
+            }
+
+            currentImg = (currentImg + 1) % imgs.length;
+
+            imgs[currentImg].classList.add('active');
+        }
+
+        var timer = setInterval(changeSlide, interval);
+</script>
 </body>
 </html>

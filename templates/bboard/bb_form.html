@@ -9,6 +9,6 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Изменить</button> |
-        <a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
+        <input type="button" value="Отмена" class="btn btn-primary" onclick="window.history.back();" />
     </form>
 {% endblock %}

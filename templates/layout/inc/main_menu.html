@@ -1,3 +1,4 @@
+{% load static%}
 <div class="header">
     <div class="inner_header">
         <div class="nav">
@@ -12,9 +13,9 @@
             {% endif %}
             {% endif %}
             <form action="{% url 'bboard:search' %}" method="get" class="search">
-                <input type="search" placeholder="Введите название..." name="q" required="">
+                <input type="search" placeholder="Поиск..." name="q" required="">
                 <button class='submit' type="submit" >
-                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"><img src="{% static 'bboard/icons8-поиск-100.png'%}" alt=""></span>
                 </button>
             </form>
                     {% if user.is_anonymous %}

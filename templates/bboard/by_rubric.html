@@ -9,20 +9,21 @@
         <h2>
             <a href="{{ detail_url }}">{{ bb.title }}</a>
         </h2>
-        <p>{{ bb.content }}</p>
+
         {% if bb.photo %}
             <p><img class="imgindetail" src="{{bb.photo.url}}"></p>
         {% endif %}
+        {% if perms.catalog.can_create %}
         <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-        <p><a href="{{ detail_url }}" class="btn btn-primary">Подробнее</a><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a></p>
+        {% endif %}
+        <p><a href="{{ detail_url }}" class="btn btn-primary">Подробнее</a></p>
     </div>
     {% empty %}
-        <h2>Объявлений нет</h2>
+        <h2>Распродано</h2>
     {% endfor %}
 {% endblock %}
 {% block da %}
     <div class="paginator">
-        Страница {{ page.number }} из {{ page.paginator.num_pages }}
         {% if page.has_other_pages %}
         <nav aria-label="pagination" class="pagination">
             <ul class="pagination">

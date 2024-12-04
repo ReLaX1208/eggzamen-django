@@ -20,15 +20,30 @@ body{
 }
 a{
     text-decoration:none;
+    margin-right: 3px;
 }
 .modal-content{
-    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
-    color: white;
-    text-align: center;
-    padding: 1px;
-    height: auto;
-    padding-top: 150px;
-    padding-bottom: 70px;
+margin-top: 4.3%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: -10%;
+}
+.detail-container {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+}
+.photo-container {
+    flex: 0 0 50%; /* Set the width of the photo container */
+}
+.imgindetail2 {
+    max-width: 100%; /* Make sure the image is responsive */
+    border-radius: 8px; /* Optional: round the corners of the image */
+}
+.info-container {
+    flex: 1; /* Take the remaining space */
+    margin-left: 350px;
 }
 .header2{
     margin-top: 105px;
@@ -75,28 +90,50 @@ a{
 }
 
 .paginator{
-width:300px;
-margin:0 auto;
-padding-top: 10px;
+    width:300px;
+    margin:0 auto;
+    padding-top: 100px;
 }
 .imgindetail{
-height:250px;
-width:400px;
+    height:250px;
+    width:400px;
 }
-.imginindex{
-height: 100%;
-width:100%;
-position: relative;
+.imginindex {
+    width: 500px;
+    height: 300px;
+    position: absolute;
+    transform: translate(-80px, -30px);
 }
+.action-buttons {
+    margin-top: 45px; /* Add space between the image and the buttons */
+    text-align: center; /* Center-align the buttons (optional) */
+}
+
 .b1 {
     width: 300px;
-    height: 184px;
+    height: 300px; /* Let the container adjust its height based on content */
     display: inline-block;
-    margin: 30px;
+    margin: 15px;
+    margin-top:20px;
+    position: relative; /* Ensure child elements are positioned relative to this container */
+    transition: 0.7s;
+}
+.b1:hover {
+  transform: scale(1.05)
+}
+.b1 h2{
+    margin-bottom:25px;
+}
+.slider {
+    position: relative;
+    overflow: hidden;
+    height: 750px;
+    margin-bottom: -140px;
+    margin-top: 80px;
 }
 .submit{
-width:20px;
-height:20px;
+    width:20px;
+    height:20px;
 }
 .rubrics {
    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
@@ -104,17 +141,35 @@ height:20px;
     text-align: center;
     padding: 1px;
     height: auto;
-    padding-top: 150px;
+    padding-top:140px;
+}
+.search input[type="search"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 11px;
 }
 .search{
-height: 100%;
+    height: 100%;
     float: left;
-    display: table;
     padding: 25px 20px;
-   }
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+   .search button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    background: #f0f0f0;
+    width:33px;
+    height:33px;
+}
 .rubrica{
     display: inline-block;
     margin: 10px;
+    margin-top: 60px;
     vertical-align:top;
 }
 section{
@@ -128,7 +183,8 @@ section{
     margin: 2% auto 5% auto;
     border: 1px solid #888;
     width: 80%;
-        padding: 16px;
+    padding: 16px;
+    border-radius: 20px;
 }
 
 .modal-contentlogin{
@@ -141,7 +197,7 @@ section{
     padding-bottom: 70px;
 }
 input[type=text], input[type=password], input[type=number]{
- width: 100%;
+    width: 100%;
     padding: 15px;
     display: inline-block;
     border: none;
@@ -164,19 +220,23 @@ textarea{
     background: #f1f1f1;
     height:100px;
 }
+.submit img{
+    width:15px;
+    height:15px;
+}
 .success{
-top:70px
---bs-alert-color: var(--bs-success-text-emphasis);
+    top:70px
+    --bs-alert-color: var(--bs-success-text-emphasis);
     --bs-alert-bg: var(--bs-success-bg-subtle);
     --bs-alert-border-color: var(--bs-success-border-subtle);
     --bs-alert-link-color: var(--bs-success-text-emphasis);
     --bs-alert-padding-x: 30px;
-    --bs-alert-padding-y: 100px;
+    --bs-alert-padding-y: 30px;
     --bs-alert-margin-bottom: -70px;
     --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
     --bs-alert-border-radius: var(--bs-border-radius);
     padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
-    margin-bottom: -10px;
+    margin-top: 70px;
     position:relative;
     color: var(--bs-alert-color);
     background-color: var(--bs-alert-bg);
@@ -196,34 +256,34 @@ top:70px
     padding-top: 50px;
 }
 .registerform{
-background-color:white;
+    background-color:white;
     color: black;
     margin: 5% auto 15% auto;
     border: 1px solid #888;
     width: 80%;
-        padding: 16px;
+    padding: 16px;
 }
 .footer{
-background-color: #24262b;
+    background-color: #24262b;
     padding: 70px 0;
     text-align:justify;
     margin-top:20px;
 }
 .container{
-max-width: 1170px;
+    max-width: 1170px;
     margin: auto;
 }
 .row{
-width:100%;
-display: flex;
+    width:100%;
+    display: flex;
     flex-wrap: wrap;
 }
 .footer-col{
-width: 25%;
+    width: 25%;
     padding: 0 15px;
 }
 .footer-col h4{
-font-size: 18px;
+    font-size: 18px;
     color: white;
     text-transform: capitalize;
     margin-bottom: 35px;
@@ -231,11 +291,11 @@ font-size: 18px;
     position: relative;
 }
 .footer-col ul li:not(:last-cild){
-margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 ul{
-list-style:none;
-padding:0;
+    list-style:none;
+    padding:0;
 }
 .footer-col ul li a{
     width: 45%;
@@ -290,27 +350,54 @@ padding:0;
     border-radius: 10px;
     overflow: hidden;
 }
+.slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+
+}
+.centered2 h1, h3 {
+    color: rgb(255, 255, 255);
+}
+.social-links img {
+    height: 60px;
+    padding-bottom: 10px;
+}
+.slider img.active {
+    opacity: 1;
+    z-index: 1;
+}
+.centered2 {
+    position: relative;
+    top: -500px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+}
 iframe{
-position:absolute;
+    position:absolute;
 }
 .column{
-float: left;
+    float: left;
     width: 33.3%;
     margin-bottom: 16px;
     padding: 0 8px;
 }
 .card{
-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin: 8px;
 }
 .clickable-div {
     position: relative;
     display: block;
     width: 100%;
-    height: 100%;
-    text-decoration: none;
-    color: inherit;
-    margin-bottom: 15px;
+    height: 290px; /* Set a fixed height for the image container */
+    overflow: hidden; /* Ensure the image does not overflow */
 }
 .text-on-top {
     position: absolute;
@@ -320,7 +407,7 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 0 16px;
 }
 .title{
-color: grey;
+    color: grey;
     padding-top: 10px;
     padding-bottom: 10px;
 }

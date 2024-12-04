@@ -1,5 +1,15 @@
 {% extends "layout/basic.html" %}
-
+{% load static %}
+{% block net %}
+<div class="slider">
+            <img src="{% static 'bboard/lamborghini-centenario-side-uhd-4k-wallpaper.jpg' %}">
+            <img src="{% static 'bboard/2020_porsche_911_25.jpg' %}">
+            <img src="{% static 'bboard/ferrari_296_gt3_2022_4k_8k_4-5120x2880.jpg' %}">
+            <img src="{% static 'bboard/bugatti-divo-side-uhd-4k-wallpaper.jpg' %}">
+          </div>
+<div class="centered2" id="text_cl"><h1>YOUR DREAM CAR</h1><h3>IS WAITING</h3></div>
+{% endblock %}
+{% block rubrics %}
 {% block content %}
 <h1>НАШИ САМЫЕ ПОПУЛЯРНЫЕ БРЕНДЫ</h1>
 
@@ -14,46 +24,7 @@
     </a></div>
 {% endfor %}
 
-
 {% endblock %}
-    {% block da %}
-    <div class="paginator">
-        Страница {{ page.number }} из {{ page.paginator.num_pages }}
-        {% if page.has_other_pages %}
-        <nav aria-label="pagination" class="pagination">
-            <ul class="pagination">
+{% endblock %}
 
-                {% if page.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page.previous_page_number }}">Назад</a>
-                    </li>
-                {% endif %}
 
-                {% for p in page.paginator.page_range %}
-                    {% if not p == page.number %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link disabled bg-primary text-light"
-                               href="?page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page.next_page_number }}">Вперёд</a>
-                    </li>
-                {% endif %}
-
-            </ul>
-        </nav>
-    </div>
-    
-
-    {% endif %}
-    {% endblock %}

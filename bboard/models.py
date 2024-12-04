@@ -54,7 +54,7 @@ class Rubric(models.Model):
     class Meta:
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
-        ordering = ['name', '-photo']
+        ordering = ['photo', 'name', ]
 
 
 class BbManager(models.Manager):
@@ -72,8 +72,8 @@ class Bb(models.Model):
 
     kind = models.CharField(max_length=1, choices=KINDS, default='s')
 
-    rubric = models.ForeignKey('Rubric', null=True, on_delete=models.PROTECT,
-                               verbose_name='Рубрика')
+    rubric = models.ForeignKey('Rubric', null=True, on_delete=models.CASCADE,
+                               verbose_name='Рубрика',)
     title = models.CharField(max_length=50, verbose_name='Товар',
                              validators=[
                                  validators.RegexValidator(

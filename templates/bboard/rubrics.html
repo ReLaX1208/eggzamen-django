@@ -1,6 +1,7 @@
 {% extends "layout/basic.html" %}
-
+{% block rubrics%}
 {% block content %}
+<h1>Рубрики</h1>
 {% for rubric in rubrics %}
             <div class="b1">
                     <h2>{{rubric.name}}</h2>
@@ -8,20 +9,21 @@
             <a href="{{ rubric.get_absolute_url }}" class="clickable-div">
 
             <p class="text-on-top"><img class="imginindex" src="{{rubric.photo.url}}"></p>
+
         {% endif %}
 
     </a>
-        <p><a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn btn-primary">Изменить</a>
+        <div class="action-buttons"><a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn btn-primary">Изменить</a>
             <a href="{{ rubric.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
-            </a></p>
+            </a></div>
     </div>
     {% empty %}
         <h2>Рубрик нет</h2>
     {% endfor %}
 {% endblock %}
+{% endblock%}
 {% block da %}
     <div class="paginator">
-        Страница {{ page.number }} из {{ page.paginator.num_pages }}
         {% if page.has_other_pages %}
         <nav aria-label="pagination" class="pagination">
             <ul class="pagination">

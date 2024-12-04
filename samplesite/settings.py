@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'rest_framework',
 ]
-
+#qwe123!@#
 SITE_ID = 1
 
 MIDDLEWARE = [

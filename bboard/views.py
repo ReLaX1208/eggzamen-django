@@ -175,8 +175,6 @@ def edit(request, pk):
         if bbf.is_valid():
             if bbf.has_changed():
                 bbf.save()
-                messages.add_message(request, messages.SUCCESS, 'Объявление исправлено!',
-                                     extra_tags='alert alert-success')
                 messages.success(request, 'Объявление исправлено!',
                                  extra_tags='alert alert-success')
             return HttpResponseRedirect(
@@ -188,6 +186,8 @@ def edit(request, pk):
         bbf = BbForm(instance=bb)
         context = {'form': bbf}
         return render(request, 'bboard/bb_form.html', context)
+
+
 
 
 class BbAddView(LoginRequiredMixin, FormView):
@@ -265,7 +265,7 @@ class BbDeleteView(LoginRequiredMixin, DeleteView):
 
 class RubricDeleteView(LoginRequiredMixin, DeleteView):
     model = Rubric
-    success_url = reverse_lazy('bboard:index')
+    success_url = reverse_lazy('bboard:rubrics')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -311,14 +311,22 @@ class Search(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
-            return Bb.objects.filter(title__icontains=query)
+            # Filter Bb objects by title or by related rubric title
+            return Bb.objects.filter(
+                title__icontains=query
+            ).distinct() | Bb.objects.filter(
+                rubric__name__icontains=query
+            ).distinct()
         return Bb.objects.none()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+
         context['bbs'] = Bb.objects.order_by('-published')
+
         if 'bb_id' in self.kwargs:
             context['current_bb'] = Bb.objects.get(pk=self.kwargs['bb_id'])
+
         paginator = Paginator(self.object_list, self.paginate_by)
         page_num = self.request.GET.get('page', 1)
         page = paginator.get_page(page_num)

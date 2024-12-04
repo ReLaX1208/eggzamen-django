@@ -15,19 +15,14 @@ from captcha.fields import CaptchaField
 
 class BbForm(ModelForm):
     title = forms.CharField(
-        label='Название товара',
+        label='Название модели',
         strip=True)
     price = forms.DecimalField(label='Цена', decimal_places=2, initial=0.0)
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(),
-                                    label='Рубрика',
-                                    help_text='Не забудьте выбрать рубрику!',
+                                    label='Бренд',
+                                    help_text='Не забудьте выбрать бренд!',
                                     )
 
-    def clean_title(self):
-        val = self.cleaned_data['title']
-        if val == 'Прошлогодний снег':
-            raise ValidationError('К продаже не допускается')
-        return val
 
     def clean(self):
         super().clean()
@@ -51,7 +46,7 @@ class BbForm(ModelForm):
 
 
 class RubricForm(ModelForm):
-    name = forms.CharField(label='Название рубрики')
+    name = forms.CharField(label='Название бренда')
 
     class Meta:
         model = Rubric
