@@ -18,13 +18,21 @@
                     <span aria-hidden="true"><img src="{% static 'bboard/icons8-поиск-100.png'%}" alt=""></span>
                 </button>
             </form>
-                    {% if user.is_anonymous %}
-            <a href="{% url 'login' %}"><li>Войти</li></a>
-            <a href="{% url 'register' %}"><li>Регистрация</li></a>
-        {% else %}
-            <a href="{% url 'profile' %}"><li>{{user.username}}</li></a>
-            <a href="{% url 'logout' %}"><li>Выйти</li></a></li>
-        {% endif %}
+{% if user.is_anonymous %}
+    <a href="{% url 'login' %}"><li>Войти</li></a>
+    <a href="{% url 'register' %}"><li>Регистрация</li></a>
+{% else %}
+    <a href="{% url 'profile' %}"><li>{{ user.username }}</li></a>
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none; border:none; cursor:pointer; text-decoration:none;height: 100%;
+    float: left;
+    display: table;
+    padding: 0 20px;">
+            <li>Выйти</li>
+        </button>
+    </form>
+{% endif %}
         </div>
     </div>
 </div>

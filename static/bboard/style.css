@@ -290,7 +290,7 @@ textarea{
     font-weight: 500;
     position: relative;
 }
-.footer-col ul li:not(:last-cild){
+.footer-col ul li:not(:last-child){
     margin-bottom: 10px;
 }
 ul{
