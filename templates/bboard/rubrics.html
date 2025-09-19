@@ -13,9 +13,15 @@
         {% endif %}
 
     </a>
-        <div class="action-buttons"><a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn btn-primary">Изменить</a>
-            <a href="{{ rubric.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
-            </a></div>
+        <div class="action-buttons">
+    <div class="form-actions">
+        <a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn-primary">✏️ Изменить</a>
+    </div>
+    <div class="form-actions">
+        <a href="{{ rubric.get_absolute_url }}" class="btn-primary">ℹ️ Подробнее</a>
+    </div>
+</div>
+
     </div>
     {% empty %}
         <h2>Рубрик нет</h2>

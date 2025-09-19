@@ -23,7 +23,8 @@ from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from bboard.models import Profile
+from bboard.forms import ProfileForm
 from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm, \
     ProfileUserForm, UploadFileForm, UserSetNewPasswordForm, UserForgotPasswordForm
 from bboard.models import Bb, Rubric, UploadFiles
@@ -394,3 +395,57 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 
 def about(request):
     return render(request, 'bboard/about.html')
+
+@login_required
+def profile_view(request):
+    user = request.user
+    if request.method == "POST":
+        user_form = ProfileUserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Профиль успешно обновлён!")
+            return redirect("profile")
+    else:
+        user_form = ProfileUserForm(instance=user)
+        profile_form = ProfileForm(instance=user.profile)
+
+    return render(request, "bboard/profile.html", {
+        "user_form": user_form,
+        "profile_form": profile_form,
+    })
+from django.views import View
+
+from .forms import ProfileUserForm
+from .models import Profile
+from django.utils.decorators import method_decorator
+
+@method_decorator(login_required, name="dispatch")
+class ProfileUser(View):
+    template_name = "registration/profile.html"
+
+    def get(self, request):
+        user_form = ProfileUserForm(instance=request.user)
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile_form = ProfileForm(instance=profile)
+        return render(request, self.template_name, {
+            "user_form": user_form,
+            "profile_form": profile_form,
+        })
+
+    def post(self, request):
+        user_form = ProfileUserForm(request.POST, instance=request.user)
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Профиль обновлён!", extra_tags="alert alert-success")
+            return redirect("profile")
+
+        return render(request, self.template_name, {
+            "user_form": user_form,
+            "profile_form": profile_form,
+        })

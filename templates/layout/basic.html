@@ -14,49 +14,33 @@
 <body>
 {% include 'layout/inc/main_menu.html' %}
 {% if messages %}
-{#        <ul class="alert alert-success success">#}
-        {% for message in messages %}
-{#            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>#}
-{#                {{ message }}#}
-{#            </li>#}
-            <div{% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                {{ message }}
-            </div>
-        {% endfor %}
-{#        </ul>#}
-    {% endif %}
+    {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
-{% block net %}
-{% endblock %}
-
-
-<div class="rubrics">
-    {% block content %}
-
-    {% endblock %}
-    {% block da %}
-
-    {% endblock %}
-</div>
+<main>
+    {% block net %}{% endblock %}
+    <div class="rubrics">
+        {% block content %}{% endblock %}
+        {% block da %}{% endblock %}
+    </div>
+</main>
 
 {% include 'layout/inc/footer.html' %}
 {% bootstrap_javascript %}
 <script>
-       var imgs = document.querySelectorAll('.slider img');
-        var currentImg = 0;
-        const interval = 2000;
-
-        function changeSlide() {
-            for (var i = 0; i < imgs.length; i++) {
-                imgs[i].classList.remove('active');
-            }
-
-            currentImg = (currentImg + 1) % imgs.length;
-
-            imgs[currentImg].classList.add('active');
-        }
-
-        var timer = setInterval(changeSlide, interval);
+   var imgs = document.querySelectorAll('.slider img');
+   var currentImg = 0;
+   const interval = 2000;
+   function changeSlide() {
+       imgs.forEach(img => img.classList.remove('active'));
+       currentImg = (currentImg + 1) % imgs.length;
+       imgs[currentImg].classList.add('active');
+   }
+   setInterval(changeSlide, interval);
 </script>
 </body>
 </html>

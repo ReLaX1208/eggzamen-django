@@ -1,15 +1,18 @@
 {% extends "layout/basic.html" %}
 {% load django_bootstrap5 %}
 
-
 {% block title %}Добавление объявления{% endblock %}
 
 {% block content %}
 <h2>Добавление объявления</h2>
-    <form method="post" enctype="multipart/form-data" class="loginform">
+<div class="ad-form-container">
+
+    <form method="post" enctype="multipart/form-data" class="ad-form">
         {% csrf_token %}
         {% bootstrap_form form layout='horizontal' show_help=False size='sm' %}
-        {% bootstrap_button 'Добавить' %}
+        <div class="form-actions">
+            {% bootstrap_button 'Добавить' button_type='submit' button_class='btn-primary' %}
+        </div>
     </form>
+</div>
 {% endblock %}
-

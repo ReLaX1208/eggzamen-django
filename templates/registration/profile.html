@@ -1,14 +1,56 @@
 {% extends "layout/basic.html" %}
 {% block content %}
-<h1>Профиль</h1>
-<form method="post">
-{% csrf_token %}
-  <div class="form-error">{{ form.non_field_errors }}</div>
-{% for f in form %}
-<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}:</label>{{ f }}</p>
-<div class="form-error">{{ f.errors }}</div>
-{% endfor %}
-  <p><a href="{% url 'password_reset' %}">Сменить пароль</a></p>
-<p><button type="submit">Сохранить</button></p>
-</form>
+<div class="profile-container">
+    <h1 class="profile-title">Мой профиль</h1>
+
+    <div class="profile-card">
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+
+            <div class="form-error">
+                {{ user_form.non_field_errors }}
+                {{ profile_form.non_field_errors }}
+            </div>
+
+            <div class="form-section">
+                <h3>Основные данные</h3>
+                {% for f in user_form %}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                        {{ f }}
+                        <div class="form-error">{{ f.errors }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-section">
+                <h3>Аватар</h3>
+                {% for f in profile_form %}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                        {{ f }}
+                        <div class="form-error">{{ f.errors }}</div>
+                    </div>
+                {% endfor %}
+
+                {% if user.profile.avatar %}
+                    <div class="current-avatar">
+                        <p>Текущий аватар:</p>
+                        <img src="{{ user.profile.avatar.url }}" alt="avatar">
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'password_reset' %}" class="password-link">Сменить пароль</a>
+                <button type="submit" class="btn-save">💾 Сохранить</button>
+            </div>
+        </form>
+
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">🚪 Выйти</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

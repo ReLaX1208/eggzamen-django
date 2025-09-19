@@ -12,6 +12,8 @@ from django import forms
 from bboard.models import Bb, Rubric
 from captcha.fields import CaptchaField
 
+from .models import Profile
+
 
 class BbForm(ModelForm):
     title = forms.CharField(
@@ -161,3 +163,12 @@ class ProfileUserForm(forms.ModelForm):
 
 class UploadFileForm(forms.Form):
     file = forms.ImageField(label="Файл")
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["avatar"]
+        labels = {"avatar": "Аватар"}
+        widgets = {
+            "avatar": forms.FileInput(attrs={"class": "form-control"})
+        }

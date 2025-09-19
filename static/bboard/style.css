@@ -1,7 +1,3 @@
-body{
-    line-height: 1.5;
-    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
-}
 .nav{
     float: right;
     height: 100%;
@@ -177,7 +173,7 @@ section{
     overflow: hidden;
     height: 100%;
 }
-.loginform{
+.ad-form{
     background-color:white;
     color: black;
     margin: 2% auto 5% auto;
@@ -379,18 +375,11 @@ ul{
     text-align: center;
     z-index: 2;
 }
-iframe{
-    position:absolute;
-}
 .column{
     float: left;
     width: 33.3%;
     margin-bottom: 16px;
     padding: 0 8px;
-}
-.card{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    margin: 8px;
 }
 .clickable-div {
     position: relative;
@@ -403,11 +392,280 @@ iframe{
     position: absolute;
     z-index: 1;
 }
-.container32{
-    padding: 0 16px;
-}
 .title{
     color: grey;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    line-height: 1.5;
+    background: linear-gradient(to right, rgb(99, 1, 1), rgb(71, 2, 2), 30%, rgb(40, 60, 89), 70%, rgb(61, 1, 1), rgb(104, 2, 2));
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+main {
+    flex: 1;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0px auto 50px auto;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+.profile-title {
+    font-size: 32px;
+    margin-bottom: 25px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.profile-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: black;
+}
+
+.profile-form h3 {
+    text-align: left;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="password"],
+.profile-form input[type="file"],
+.profile-form input[type="number"],
+.profile-form textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    font-size: 14px;
+}
+
+.current-avatar {
+    margin-top: 15px;
+    text-align: center;
+}
+.current-avatar img {
+    width: 250px;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.form-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+     flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.password-link {
+    font-size: 14px;
+    color: #1976d2;
+    text-decoration: none;
+}
+.form-actions .password-link,
+.form-actions .btn-save {
+    display: block;
+    width: fit-content; /* по содержимому */
+}
+.password-link:hover {
+    text-decoration: underline;
+}
+
+.btn-save {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-save:hover {
+    background: #43a047;
+    transform: scale(1.05);
+}
+
+.logout-form {
+    margin-top: 20px;
+    text-align: center;
+}
+.btn-logout {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-logout:hover {
+    background: #e53935;
+    transform: scale(1.05);
+}
+.about-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 40px 20px;
+    background: linear-gradient(to right, rgb(99, 1, 1), rgb(40, 60, 89), rgb(104, 2, 2));
+    color: white;
+}
+
+.map-container {
+    flex: 1;
+    min-width: 350px;
+    max-width: 450px;
+    margin: 10px;
+}
+.map-container iframe {
+    width: 100%;
+    height: 500px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.about-text {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 20px;
+}
+.about-text h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.about-text p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.team-title {
+    text-align: center;
+    margin: 60px 0 40px 0;
+    font-size: 32px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+    background: #fff;
+}
+.card img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    max-height: 250px;
+    object-fit: cover;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.container32 {
+    padding: 20px;
+}
+.container32 h2 {
+    margin: 10px 0;
+    color: #222;
+}
+.container32 .title {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+.container32 p {
+    color: #333;
+    font-size: 14px;
+}
+
+.btn-contact {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.btn-contact:hover {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    transform: scale(1.05);
+}
+.ad-form-container {
+    max-width: 700px;
+    margin: 20px auto 60px auto;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+.ad-form .form-group {
+    margin-bottom: 20px;
+}
+
+.ad-form label.col-form-label {
+    color: #222 !important;
+    font-weight: 500;
+}
+.loginform label {
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #2196f3, #21cbf3);
+    color: white;
+    padding: 12px 25px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #21cbf3, #2196f3);
+    transform: scale(1.05);
 }
