@@ -1,64 +1,65 @@
 {% extends "layout/basic.html" %}
 
-
 {% block content %}
-<h2>{{ current_rubric }}</h2>
-    {% for bb in bbs %}
-    <div class="rubrica">
+<h2 class="rubric-title">{{ current_rubric }}</h2>
+
+<div class="rubrica-grid">
+{% for bb in bbs %}
+    <div class="rubrica-card">
         {% url 'bboard:detail' bb.pk as detail_url %}
-        <h2>
+        <h3 class="rubrica-title">
             <a href="{{ detail_url }}">{{ bb.title }}</a>
-        </h2>
+        </h3>
 
         {% if bb.photo %}
-            <p><img class="imgindetail" src="{{bb.photo.url}}"></p>
+            <div class="rubrica-img-wrapper">
+                <img class="rubrica-img" src="{{ bb.photo.url }}">
+            </div>
         {% endif %}
+
         {% if perms.catalog.can_create %}
-        <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+            <p class="rubrica-date">{{ bb.published|date:"d.m.Y H:i:s" }}</p>
         {% endif %}
-        <p><a href="{{ detail_url }}" class="btn btn-primary">Подробнее</a></p>
+
+        <a href="{{ detail_url }}" class="btn-primary">Подробнее</a>
     </div>
-    {% empty %}
-        <h2>Распродано</h2>
-    {% endfor %}
+{% empty %}
+    <p class="no-ads">Распродано!</p>
+{% endfor %}
+
+</div>
 {% endblock %}
+
 {% block da %}
-    <div class="paginator">
-        {% if page.has_other_pages %}
-        <nav aria-label="pagination" class="pagination">
-            <ul class="pagination">
+{% if page.has_other_pages %}
+<div class="paginator">
+    <nav aria-label="pagination">
+        <ul class="pagination">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.previous_page_number }}">‹</a>
+                </li>
+            {% endif %}
 
-                {% if page.has_previous %}
+            {% for p in page.paginator.page_range %}
+                {% if not p == page.number %}
                     <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page.previous_page_number }}"> < </a>
+                        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ p }}</span>
                     </li>
                 {% endif %}
+            {% endfor %}
 
-                {% for p in page.paginator.page_range %}
-                    {% if not p == page.number %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link disabled bg-primary text-light"
-                               href="?page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page.next_page_number }}"> > </a>
-                    </li>
-                {% endif %}
-
-            </ul>
-        </nav>
-    </div>
-
-
-    {% endif %}
-    {% endblock %}
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.next_page_number }}">›</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+{% endblock %}

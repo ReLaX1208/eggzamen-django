@@ -1,5 +1,5 @@
 {% extends "layout/basic.html" %}
-{% block rubrics%}
+{% block rubrics %}
 {% block content %}
 <h1>Рубрики</h1>
 {% for rubric in rubrics %}
@@ -27,7 +27,7 @@
         <h2>Рубрик нет</h2>
     {% endfor %}
 {% endblock %}
-{% endblock%}
+{% endblock %}
 {% block da %}
     <div class="paginator">
         {% if page.has_other_pages %}

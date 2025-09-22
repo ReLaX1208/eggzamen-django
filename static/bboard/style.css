@@ -26,21 +26,7 @@ margin-top: 4.3%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: -10%;
 }
-.detail-container {
-    display: flex;
-    align-items: flex-start; /* Align items to the top */
-}
-.photo-container {
-    flex: 0 0 50%; /* Set the width of the photo container */
-}
-.imgindetail2 {
-    max-width: 100%; /* Make sure the image is responsive */
-    border-radius: 8px; /* Optional: round the corners of the image */
-}
-.info-container {
-    flex: 1; /* Take the remaining space */
-    margin-left: 350px;
-}
+
 .header2{
     margin-top: 105px;
     width: 100%;
@@ -85,15 +71,7 @@ margin-top: 4.3%;
     background-color: rgb(0, 0, 0);
 }
 
-.paginator{
-    width:300px;
-    margin:0 auto;
-    padding-top: 100px;
-}
-.imgindetail{
-    height:250px;
-    width:400px;
-}
+
 .imginindex {
     width: 500px;
     height: 300px;
@@ -162,12 +140,7 @@ margin-top: 4.3%;
     width:33px;
     height:33px;
 }
-.rubrica{
-    display: inline-block;
-    margin: 10px;
-    margin-top: 60px;
-    vertical-align:top;
-}
+
 section{
     position: relative;
     overflow: hidden;
@@ -238,10 +211,6 @@ textarea{
     background-color: var(--bs-alert-bg);
     border: var(--bs-alert-border);
     border-radius: var(--bs-alert-border-radius);
-}
-.pagination{
-    padding-left: 38px;
-    padding-top: 10px;
 }
 .registration{
     text-align: justify;
@@ -668,4 +637,292 @@ main {
 .btn-primary:hover {
     background: linear-gradient(45deg, #21cbf3, #2196f3);
     transform: scale(1.05);
+}
+
+.rubric-title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.rubrica-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.rubrica-card {
+    flex: 1 1 280px;
+    max-width: 320px;
+}
+
+
+.rubrica-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rubrica-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.rubrica-title {
+    margin-bottom: 15px;
+}
+
+.rubrica-title a {
+    text-decoration: none;
+    color: #222;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+
+.rubrica-title a:hover {
+    color: #2196f3;
+}
+
+.rubrica-img-wrapper {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.rubrica-img {
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.rubrica-img:hover {
+    transform: scale(1.03);
+}
+
+.rubrica-date {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.paginator {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.pagination {
+    display: inline-flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background: #ddd;
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(45deg, #2196f3, #21cbf3);
+    color: #fff;
+    font-weight: bold;
+}
+.detail-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.detail-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    flex-wrap: wrap;
+}
+
+.photo-container {
+    flex: 1 1 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgindetail2 {
+    max-width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.info-container {
+    flex: 1 1 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.rubric-title {
+    font-size: 22px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.product-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.product-desc {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2196f3;
+    margin-bottom: 15px;
+}
+
+.product-price span {
+    color: #e91e63;
+}
+
+.product-meta {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #f44336, #e53935);
+    color: white;
+    padding: 12px 25px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(45deg, #e53935, #f44336);
+    transform: scale(1.05);
+}
+.form-wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: white;
+}
+
+.styled-form p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.styled-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.styled-form input,
+.styled-form textarea,
+.styled-form select {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.styled-form input:focus,
+.styled-form textarea:focus,
+.styled-form select:focus {
+    outline: none;
+    border-color: #2196f3;
+    box-shadow: 0 0 6px rgba(33, 150, 243, 0.4);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fafafa;
+}
+.form-section h3 {
+    color: black;
+}
+input[type="file"] {
+    color: #000;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.current-photo {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.current-photo img {
+    width: 350px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.initial-text {
+    color: #444;
+}
+.input-text {
+    color: #444;
+}
+.clear-text {
+    color: #444;
 }

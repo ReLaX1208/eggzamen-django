@@ -1,27 +1,36 @@
 {% extends "layout/basic.html" %}
 
 {% block net %}
-<div class="modal-content">
+<div class="detail-wrapper">
     <div class="detail-container">
         {% if bb.photo %}
             <div class="photo-container">
-                <img class="imgindetail2" src="{{bb.photo.url}}" alt="Product Image">
+                <img class="imgindetail2" src="{{ bb.photo.url }}" alt="{{ bb.title }}">
             </div>
         {% endif %}
+
         <div class="info-container">
-            <h1>{{ bb.rubric.name }}</h1>
-            <h2>{{ bb.title }}</h2>
-            <p>{{ bb.content }}</p>
-            <p>Цена: {{ bb.price|default:'У товара нет цены' }} тг.</p>
-            {% if perms.catalog.can_create %}
-            <p>Было добавлено: {{ bb.published|date:"d.m.Y" }}</p>
-            {% endif %}
-            <p>
-                {% if perms.catalog.can_create %}
-                    <a href="{% url 'bboard:update' bb.pk %}" class="btn btn-primary">Изменить</a> |
-                    <a href="{% url 'bboard:delete' bb.pk %}" class="btn btn-primary">Удалить</a>
-                {% endif %}
+            <h1 class="rubric-title">{{ bb.rubric.name }}</h1>
+            <h2 class="product-title">{{ bb.title }}</h2>
+
+            <p class="product-desc">{{ bb.content }}</p>
+
+            <p class="product-price">
+                Цена: <span>{{ bb.price|default:'У товара нет цены' }}</span> тг.
             </p>
+
+            {% if perms.catalog.can_create %}
+                <p class="product-meta">
+                    Было добавлено: {{ bb.published|date:"d.m.Y" }}
+                </p>
+            {% endif %}
+
+            {% if perms.catalog.can_create %}
+            <div class="action-buttons">
+                <a href="{% url 'bboard:update' bb.pk %}" class="btn-primary">Изменить</a>
+                <a href="{% url 'bboard:delete' bb.pk %}" class="btn-danger">Удалить</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

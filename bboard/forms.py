@@ -8,11 +8,23 @@ from django.forms import (ModelForm, modelform_factory, DecimalField,
                           modelformset_factory, BaseModelFormSet)
 from django.forms.widgets import Select, TextInput, PasswordInput
 from django import forms
+from django.utils.safestring import mark_safe
 
 from bboard.models import Bb, Rubric
 from captcha.fields import CaptchaField
-
+from django.forms.widgets import ClearableFileInput
 from .models import Profile
+
+class CustomClearableFileInput(ClearableFileInput):
+    template_with_initial = (
+        '%(initial_text)s: %(initial)s '
+        '%(clear_template)s<br>'
+        '%(input_text)s: %(input)s'
+    )
+
+    initial_text = mark_safe('<span class="initial-text">На данный момент</span>')
+    input_text = mark_safe('<span class="input-text">Изменить</span>')
+    clear_checkbox_label = mark_safe('<span class="clear-text">Очистить</span>')
 
 
 class BbForm(ModelForm):
@@ -22,7 +34,6 @@ class BbForm(ModelForm):
     price = forms.DecimalField(label='Цена', decimal_places=2, initial=0.0)
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(),
                                     label='Бренд',
-                                    help_text='Не забудьте выбрать бренд!',
                                     )
 
 
@@ -43,9 +54,12 @@ class BbForm(ModelForm):
 
     class Meta:
         model = Bb
-        fields = ('title', 'content', 'photo', 'price', 'rubric')
-        labels = {'title': 'Название товара'},
-
+        fields = ('title', 'content', 'price', 'rubric', 'photo')
+        labels = {'title': 'Название товара',
+                  },
+        widgets = {
+            "photo": CustomClearableFileInput
+        }
 
 class RubricForm(ModelForm):
     name = forms.CharField(label='Название бренда')
@@ -53,7 +67,7 @@ class RubricForm(ModelForm):
     class Meta:
         model = Rubric
         fields = {'name', 'photo'}
-        labels = {'name': 'Nazvanie'}
+        labels = {'name': 'Название'}
 
 
 class RubricBaseFormSet(BaseModelFormSet):
