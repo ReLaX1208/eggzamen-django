@@ -1,6 +1,7 @@
 {% extends "layout/basic.html" %}
 {% block rubrics %}
 {% block content %}
+    <div class="rubrics">
 <h1>Рубрики</h1>
 {% for rubric in rubrics %}
             <div class="b1">
@@ -26,6 +27,7 @@
     {% empty %}
         <h2>Рубрик нет</h2>
     {% endfor %}
+    </div>
 {% endblock %}
 {% endblock %}
 {% block da %}

@@ -3,6 +3,7 @@
 {% block title %}Изменение объявления{% endblock %}
 
 {% block content %}
+<div class="rubrics">
 <section class="edit-ad-section">
     <h2 class="form-title">Изменение объявления</h2>
 
@@ -25,15 +26,12 @@
 
  <div class="form-section">
     <h3>Фотография</h3>
-
     {% if form.instance.photo %}
         <div class="current-avatar">
-            <p>Текущее фото:</p>
             <img src="{{ form.instance.photo.url }}" alt="{{ form.instance.title }}">
         </div>
     {% elif form.instance.image %}
         <div class="current-avatar">
-            <p>Текущее фото:</p>
             <img src="{{ form.instance.image.url }}" alt="{{ form.instance.title }}">
         </div>
     {% endif %}
@@ -48,4 +46,5 @@
         </form>
     </div>
 </section>
+    </div>
 {% endblock %}

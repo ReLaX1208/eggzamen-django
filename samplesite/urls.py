@@ -5,6 +5,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from django.views.decorators.cache import never_cache
 from django.contrib.staticfiles.views import serve
+from django.contrib.auth import views as auth_views
 
 from bboard.views import (
     LoginUser, RegisterUser, ProfileUser,
@@ -20,6 +21,16 @@ urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/register/', RegisterUser.as_view(), name='register'),
     path('password-reset/', UserForgotPasswordView.as_view(), name='password_reset'),
+path("password_change/",
+         auth_views.PasswordChangeView.as_view(
+             template_name="registration/password_change_form.html"
+         ),
+         name="password_change"),
+    path("password_change/done/",
+         auth_views.PasswordChangeDoneView.as_view(
+             template_name="registration/password_change_done.html"
+         ),
+         name="password_change_done"),
     path('set-new-password/<uidb64>/<token>/', UserPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('', include('bboard.urls', namespace='bboard')),
     path('profile/', ProfileUser.as_view(), name='profile'),

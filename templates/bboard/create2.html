@@ -4,6 +4,7 @@
 {% block title %}Добавление рубрики{% endblock %}
 
 {% block content %}
+<div class="rubrics">
 <h2>Добавление рубрики</h2>
 <div class="ad-form-container">
 <form method="post" enctype="multipart/form-data" class="ad-form">
@@ -13,5 +14,6 @@
             {% bootstrap_button 'Добавить' button_type='submit' button_class='btn-primary' %}
         </div>
 </form>
+    </div>
     </div>
 {% endblock %}

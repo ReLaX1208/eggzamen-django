@@ -1,59 +1,73 @@
 {% extends 'layout/basic.html' %}
+
 {% block content %}
-   {% for bb in bbs %}
-    <div class="rubrica">
-        {% url 'bboard:detail' bb.pk as detail_url %}
-        <h2>
-            <a href="{{ detail_url }}">{{ bb.title }}</a>
-        </h2>
-        <p>{{ bb.content }}</p>
-        {% if bb.photo %}
-            <p><img class="imgindetail" src="{{bb.photo.url}}"></p>
-        {% endif %}
-        <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-        <p><a href="{{ detail_url }}" class="btn btn-primary">Подробнее</a><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a></p>
-    </div>
+<div class="rubrics">
+<h2 class="page-title">Объявления</h2>
+
+<div class="ads-grid">
+    {% for bb in bbs %}
+        <div class="bd-card">
+            {% url 'bboard:detail' bb.pk as detail_url %}
+
+            <div class="ad-img-wrapper">
+                {% if bb.photo %}
+                    <img class="ad-img" src="{{ bb.photo.url }}" alt="{{ bb.title }}">
+                {% else %}
+                    <div class="ad-img placeholder">📷</div>
+                {% endif %}
+            </div>
+
+            <div class="bd-content">
+                <h3 class="bd-title">
+                    <a href="{{ detail_url }}">{{ bb.title }}</a>
+                </h3>
+                <p class="bd-text">{{ bb.content|truncatechars:150 }}</p>
+                <p class="ad-date">{{ bb.published|date:"d.m.Y H:i" }}</p>
+            </div>
+
+            <div class="ad-actions">
+                <a href="{{ detail_url }}" class="btn-primary">Подробнее</a>
+                <a href="{% url 'bboard:index' %}" class="btn-danger">Отмена</a>
+            </div>
+        </div>
     {% empty %}
-        <h2>Объявлений нет</h2>
+        <p class="no-ads">Объявлений нет</p>
     {% endfor %}
-{% endblock %}
-{% block da %}
-    <div class="paginator">
-        {% if page.has_other_pages %}
-        <nav aria-label="pagination" class="pagination">
-            <ul class="pagination">
-
-                {% if page.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?{{ q }}page={{ page.previous_page_number }}"> < </a>
-                    </li>
-                {% endif %}
-
-                {% for p in page.paginator.page_range %}
-                    {% if not p == page.number %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{{ q }}page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link disabled bg-primary text-light"
-                               href="?page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?{{ q }}page={{ page.next_page_number }}"> > </a>
-                    </li>
-                {% endif %}
-
-            </ul>
-        </nav>
+</div>
     </div>
+{% endblock %}
 
 
-    {% endif %}
-    {% endblock %}
+{% block da %}
+{% if page.has_other_pages %}
+<div class="paginator">
+    <nav aria-label="pagination">
+        <ul class="pagination">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ q }}page={{ page.previous_page_number }}">‹</a>
+                </li>
+            {% endif %}
+
+            {% for p in page.paginator.page_range %}
+                {% if not p == page.number %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{{ q }}page={{ p }}">{{ p }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ p }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ q }}page={{ page.next_page_number }}">›</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+{% endblock %}

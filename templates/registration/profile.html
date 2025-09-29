@@ -1,5 +1,6 @@
 {% extends "layout/basic.html" %}
 {% block content %}
+<div class="rubrics">
 <div class="profile-container">
     <h1 class="profile-title">Мой профиль</h1>
 
@@ -42,7 +43,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{% url 'password_reset' %}" class="password-link">Сменить пароль</a>
+                <a href="{% url 'password_change' %}" class="password-link">Сменить пароль</a>
                 <button type="submit" class="btn-save">💾 Сохранить</button>
             </div>
         </form>
@@ -53,4 +54,5 @@
         </form>
     </div>
 </div>
+    </div>
 {% endblock %}

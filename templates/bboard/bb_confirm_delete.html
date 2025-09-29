@@ -1,18 +1,27 @@
 {% extends "layout/basic.html" %}
 
-
 {% block title %}Удаление объявления{% endblock %}
 
 {% block content %}
-<h2>Удаление объявления</h2>
-    <p>Рубрика: {{ bb.rubric.name }}</p>
-    <h2>{{ bb.title }}</h2>
-    <p>{{ bb.content }}</p>
-    <p>Цена: {{ bb.price }} тг.</p>
-    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+<div class="form-container">
+    <h2 class="form-title">Удаление объявления</h2>
 
-    <form method="post">
+    <div class="detail-preview">
+        <p><strong>Рубрика:</strong> {{ bb.rubric.name }}</p>
+        <p><strong>Название:</strong> {{ bb.title }}</p>
+        <p><strong>Описание:</strong> {{ bb.content }}</p>
+        <p><strong>Цена:</strong> {{ bb.price }} тг.</p>
+        <p><strong>Дата публикации:</strong> {{ bb.published|date:"d.m.Y H:i:s" }}</p>
+    </div>
+
+    <p style="text-align:center; margin: 20px 0; font-weight: bold; color: #c62828;">
+        Вы уверены, что хотите удалить это объявление?
+    </p>
+
+    <form method="post" class="form-actions">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Удалить</button><a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a>
+        <button type="submit" class="btn-danger">Удалить</button>
+        <a href="{% url 'bboard:index' %}" class="btn-secondary">Отмена</a>
     </form>
+</div>
 {% endblock %}

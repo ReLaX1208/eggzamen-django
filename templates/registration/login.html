@@ -1,23 +1,78 @@
 {% extends "layout/basic.html" %}
 
-
-
 {% block title %}Вход{% endblock %}
 
 {% block net %}
-<div class="modal-contentlogin">
-        <form method="post" class="loginform">
-                <h2>Вход</h2>
-            {% csrf_token %}
-            <input type="hidden" name="text" value="{{ next }}">
-            <div class="form-error">{{ form.non_field_errors }}</div>
-            {% for f in form %}
-            <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
-            <div class="form-error">{{ f.errors }}</div>
-            {% endfor %}
-            <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
-            <p><button type="submit" class="btn btn-primary">Войти</button> | <a href="{% url 'bboard:index' %}"><input type="button" value="Отмена" class="btn btn-primary" /></a></p>
+<div class="form-container2">
+    <h2 class="form-title">🔑 Вход</h2>
 
-        </form>
+    <form method="post" class="styled-form">
+        {% csrf_token %}
+        <input type="hidden" name="text" value="{{ next }}">
+
+        <div class="form-error">{{ form.non_field_errors }}</div>
+
+        {% for f in form %}
+            <div class="form-group">
+                <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>
+
+                <div class="password-wrapper">
+                    {{ f }}
+                    {% if "password" in f.name %}
+                        <button type="button" class="toggle-password" onclick="togglePassword('{{ f.id_for_label }}', this)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" class="icon-eye">
+        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8
+                 5.5S16 8 16 8zM8 13c-2.761 0-5-2.239-5-5s2.239-5
+                 5-5 5 2.239 5 5-2.239 5-5 5z"/>
+        <path d="M8 5a3 3 0 100 6 3 3 0 000-6z"/>
+    </svg>
+</button>
+
+                    {% endif %}
+                </div>
+
+                <div class="form-error">{{ f.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <div class="form-extra">
+            <a href="{% url 'password_reset' %}" class="link">Забыли пароль?</a>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Войти</button>
+            <a href="{% url 'bboard:index' %}" class="btn-secondary">Отмена</a>
+        </div>
+    </form>
 </div>
+
+<script>
+function togglePassword(id, btn) {
+    const input = document.getElementById(id);
+    if (!input) return;
+
+    if (input.type === "password") {
+        input.type = "text";
+        btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+             fill="currentColor" viewBox="0 0 16 16">
+          <path d="M13.359 11.238l1.284 1.283a.75.75 0 11-1.06
+                   1.06l-1.285-1.282A8.375 8.375 0 018 13.5c-5
+                   0-8-5.5-8-5.5a15.386 15.386 0 012.846-3.385l-1.42-1.42a.75.75
+                   0 111.06-1.06l12 12a.75.75 0 01-1.06 1.06l-1.067-1.067z"/>
+        </svg>`;
+    } else {
+        input.type = "password";
+        btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+             fill="currentColor" viewBox="0 0 16 16">
+          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8
+                   5.5S16 8 16 8zM8 13c-2.761 0-5-2.239-5-5s2.239-5
+                   5-5 5 2.239 5 5-2.239 5-5 5z"/>
+          <path d="M8 5a3 3 0 100 6 3 3 0 000-6z"/>
+        </svg>`;
+    }
+}
+</script>
+
 {% endblock %}
