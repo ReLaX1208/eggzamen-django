@@ -10,10 +10,9 @@
             <a href="{{ rubric.get_absolute_url }}" class="clickable-div">
 
             <p class="text-on-top"><img class="imginindex" src="{{rubric.photo.url}}"></p>
-
+    </a>
         {% endif %}
 
-    </a>
         <div class="action-buttons">
     <div class="form-actions">
         <a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn-primary">✏️ Изменить</a>

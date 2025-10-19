@@ -26,20 +26,32 @@
 
             <div class="form-section">
                 <h3>Аватар</h3>
-                {% for f in profile_form %}
-                    <div class="form-group">
-                        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
-                        {{ f }}
-                        <div class="form-error">{{ f.errors }}</div>
-                    </div>
-                {% endfor %}
 
-                {% if user.profile.avatar %}
+                {# Поле загрузки #}
+                <div class="form-group">
+                    <label class="form-label" for="{{ profile_form.avatar.id_for_label }}">
+                        {{ profile_form.avatar.label }}:
+                    </label>
+                    {{ profile_form.avatar }}
+                    <div class="form-error">{{ profile_form.avatar.errors }}</div>
+                </div>
+
+                {# Текущий аватар #}
+                {% if user.profile.get_avatar_url %}
                     <div class="current-avatar">
                         <p>Текущий аватар:</p>
-                        <img src="{{ user.profile.avatar.url }}" alt="avatar">
+                        <img src="{{ user.profile.get_avatar_url }}" alt="avatar" width="120">
                     </div>
                 {% endif %}
+
+                {# Кнопка "Удалить аватар" показывается только если аватар не default #}
+                {% if user.profile.avatar and user.profile.avatar.name != "avatars/default-avatar.png" %}
+    <div class="form-group">
+        <button type="submit" name="delete_avatar" class="btn-delete">🗑 Удалить аватар</button>
+    </div>
+{% endif %}
+
+
             </div>
 
             <div class="form-actions">
@@ -54,5 +66,5 @@
         </form>
     </div>
 </div>
-    </div>
+</div>
 {% endblock %}

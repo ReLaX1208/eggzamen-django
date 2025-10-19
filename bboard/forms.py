@@ -179,6 +179,7 @@ class UploadFileForm(forms.Form):
     file = forms.ImageField(label="Файл")
 
 class ProfileForm(forms.ModelForm):
+    remove_avatar = forms.BooleanField(required=False, label="Удалить аватар")
     class Meta:
         model = Profile
         fields = ["avatar"]

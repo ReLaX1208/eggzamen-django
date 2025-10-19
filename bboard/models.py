@@ -1,8 +1,10 @@
+import os
+
 from django.contrib.auth.models import User
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
-
+from django.templatetags.static import static
 
 
 def is_active_default():
@@ -132,6 +134,12 @@ class UploadFiles(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True, verbose_name="Аватар")
+
+    def get_avatar_url(self):
+        if self.avatar and os.path.isfile(self.avatar.path):
+            return self.avatar.url
+        return static('avatars/default-avatar.png')
+
 
     def __str__(self):
         return f"Профиль {self.user.username}"

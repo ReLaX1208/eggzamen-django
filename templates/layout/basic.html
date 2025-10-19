@@ -8,8 +8,6 @@
     <title>{% block title %}Главная{% endblock %} :: Доска объявлений</title>
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'bboard/style.css' %}">
-
-
 </head>
 <body>
 {% include 'layout/inc/main_menu.html' %}
@@ -23,12 +21,25 @@
 
 <main>
     {% block net %}{% endblock %}
-        {% block content %}{% endblock %}
-        {% block da %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block da %}{% endblock %}
 </main>
 
 {% include 'layout/inc/footer.html' %}
 {% bootstrap_javascript %}
+
+<button class="chat-button" id="chatBtn">💬</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">Чат помощи</div>
+  <div class="chat-messages" id="chatMessages">
+    <p><b>Бот:</b> Здравствуйте! Чем могу помочь?</p>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Напишите сообщение...">
+    <button id="sendBtn">➤</button>
+  </div>
+</div>
+
 <script>
    var imgs = document.querySelectorAll('.slider img');
    var currentImg = 0;
@@ -39,6 +50,27 @@
        imgs[currentImg].classList.add('active');
    }
    setInterval(changeSlide, interval);
+
+   const chatBtn = document.getElementById("chatBtn");
+   const chatWindow = document.getElementById("chatWindow");
+   const sendBtn = document.getElementById("sendBtn");
+   const chatInput = document.getElementById("chatInput");
+   const chatMessages = document.getElementById("chatMessages");
+
+   chatBtn.addEventListener("click", () => {
+     chatWindow.style.display = chatWindow.style.display === "flex" ? "none" : "flex";
+   });
+
+   sendBtn.addEventListener("click", () => {
+     const message = chatInput.value.trim();
+     if (message) {
+       const msgElement = document.createElement("p");
+       msgElement.innerHTML = `<b>Вы:</b> ${message}`;
+       chatMessages.appendChild(msgElement);
+       chatInput.value = "";
+       chatMessages.scrollTop = chatMessages.scrollHeight;
+     }
+   });
 </script>
 </body>
 </html>

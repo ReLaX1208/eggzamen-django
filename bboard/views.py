@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from django.utils.decorators import method_decorator
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetConfirmView, PasswordResetView
 from django.core.paginator import Paginator
 from django.contrib.messages.views import SuccessMessageMixin
@@ -380,19 +382,6 @@ class UserPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView
         return context
 
 
-class ProfileUser(LoginRequiredMixin, UpdateView):
-    model = get_user_model()
-    form_class = ProfileUserForm
-    template_name = 'registration/profile.html'
-    extra_context = {'title': "Профиль пользователя"}
-
-    def get_success_url(self):
-        return reverse_lazy('profile')
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-
 def about(request):
     return render(request, 'bboard/about.html')
 
@@ -415,11 +404,7 @@ def profile_view(request):
         "user_form": user_form,
         "profile_form": profile_form,
     })
-from django.views import View
 
-from .forms import ProfileUserForm
-from .models import Profile
-from django.utils.decorators import method_decorator
 
 @method_decorator(login_required, name="dispatch")
 class ProfileUser(View):
@@ -435,8 +420,17 @@ class ProfileUser(View):
         })
 
     def post(self, request):
-        user_form = ProfileUserForm(request.POST, instance=request.user)
         profile, created = Profile.objects.get_or_create(user=request.user)
+
+        if "delete_avatar" in request.POST:
+            if profile.avatar and profile.avatar.name != "avatars/default-avatar.png":
+                profile.avatar.delete(save=False)
+                profile.avatar = "avatars/default-avatar.png"
+                profile.save()
+                messages.success(request, "Аватар удалён и заменён на стандартный.", extra_tags="alert alert-success")
+            return redirect("profile")
+
+        user_form = ProfileUserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
 
         if user_form.is_valid() and profile_form.is_valid():
@@ -449,3 +443,5 @@ class ProfileUser(View):
             "user_form": user_form,
             "profile_form": profile_form,
         })
+
+
