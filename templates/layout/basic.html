@@ -43,7 +43,7 @@
 <script>
    var imgs = document.querySelectorAll('.slider img');
    var currentImg = 0;
-   const interval = 2000;
+   const interval = 4000;
    function changeSlide() {
        imgs.forEach(img => img.classList.remove('active'));
        currentImg = (currentImg + 1) % imgs.length;
@@ -71,6 +71,7 @@
        chatMessages.scrollTop = chatMessages.scrollHeight;
      }
    });
+
 </script>
 </body>
 </html>

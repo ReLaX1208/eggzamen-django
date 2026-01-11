@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Rubric, Bb
+from .models import Rubric, Bb, Service
 
 
 class RubricSerializer(serializers.ModelSerializer):
@@ -12,3 +12,8 @@ class BbSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bb
         fields = ['title', 'content', 'photo', 'price', 'rubric']
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = "__all__"

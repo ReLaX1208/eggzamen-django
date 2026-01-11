@@ -25,8 +25,8 @@ from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from bboard.models import Profile
-from bboard.forms import ProfileForm
+from bboard.models import Profile, Service
+from bboard.forms import ProfileForm, ServiceForm
 from bboard.forms import BbForm, RubricFormSet, RubricForm, RegisterUserForm, LoginUserForm, SearchForm, \
     ProfileUserForm, UploadFileForm, UserSetNewPasswordForm, UserForgotPasswordForm
 from bboard.models import Bb, Rubric, UploadFiles
@@ -36,7 +36,7 @@ from bboard.serializers import RubricSerializer, BbSerializer
 
 
 def index(request):
-    rubrics = Rubric.objects.order_by_bb_count()
+    rubrics = Rubric.objects.order_by('-views')[:7]
     paginator = Paginator(rubrics, 6)
     if 'page' in request.GET:
         page_num = request.GET['page']
@@ -83,12 +83,22 @@ class BbByRubricView(ListView):
         context['page'] = page
         return context
 
+    def get(self, request, *args, **kwargs):
+        rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
+
+        if not request.user.is_superuser:
+            rubric.views = rubric.views + 1
+            rubric.save(update_fields=["views"])
+
+        return super().get(request, *args, **kwargs)
+
 
 class CustomPagination(PageNumberPagination):
     page_size = 6
 
 
 class BbApiByRubricView(generics.ListAPIView):
+    serializer_class = BbSerializer
     serializer_class = BbSerializer
     pagination_class = CustomPagination
 
@@ -443,5 +453,141 @@ class ProfileUser(View):
             "user_form": user_form,
             "profile_form": profile_form,
         })
+def brands_view(request):
+    rubrics = Rubric.objects.all().order_by('-views')
+    return render(request, "bboard/brands.html", {"rubrics": rubrics})
+def policy_view(request):
+    return render(request, "bboard/Politics.html")
+def services_view(request):
+    services = Service.objects.all().order_by("-created_at")
+    return render(request, "bboard/services.html", {"services": services})
+@login_required(login_url='login')
+def add_service(request):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    if request.method == "POST":
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Сервис успешно добавлен!")
+            return redirect("bboard:services")
+    else:
+        form = ServiceForm()
+
+    return render(request, "bboard/add_service.html", {"form": form})
+@login_required(login_url='login')
+def edit_service(request, pk):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    service = get_object_or_404(Service, pk=pk)
+
+    if request.method == "POST":
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            service = form.save(commit=False)
+
+            if form.cleaned_data.get("delete_photo"):
+                if service.photo:
+                    service.photo.delete(save=False)
+                service.photo = None
+
+            service.save()
+            messages.success(request, "Сервис обновлён!")
+            return redirect("bboard:services")
+
+    else:
+        form = ServiceForm(instance=service)
+
+    return render(request, "bboard/edit_service.html", {
+        "form": form,
+        "service": service
+    })
+@login_required(login_url='login')
+def delete_service(request, pk):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    service = get_object_or_404(Service, pk=pk)
+    service.delete()
+    messages.success(request, "Сервис удалён.")
+    return redirect("bboard:services")
+
+from bboard.models import Accessory
+from bboard.forms import AccessoryForm
+
+def accessories_view(request):
+    accessories = Accessory.objects.filter(is_active=True)
+    return render(
+        request,
+        "bboard/accessories.html",
+        {"accessories": accessories}
+    )
+
+
+@login_required
+def add_accessory(request):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    if request.method == "POST":
+        form = AccessoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Аксессуар добавлен!")
+            return redirect("bboard:accessories")
+    else:
+        form = AccessoryForm()
+
+    return render(
+        request,
+        "bboard/add_accessory.html",
+        {"form": form}
+    )
+
+
+@login_required
+def edit_accessory(request, pk):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    accessory = get_object_or_404(Accessory, pk=pk)
+
+    if request.method == "POST":
+        form = AccessoryForm(
+            request.POST,
+            request.FILES,
+            instance=accessory
+        )
+        if form.is_valid():
+            obj = form.save(commit=False)
+
+            if form.cleaned_data.get("delete_photo") and obj.photo:
+                obj.photo.delete(save=False)
+                obj.photo = None
+
+            obj.save()
+            messages.success(request, "Аксессуар обновлён")
+            return redirect("bboard:accessories")
+    else:
+        form = AccessoryForm(instance=accessory)
+
+    return render(
+        request,
+        "bboard/edit_accessory.html",
+        {"form": form, "accessory": accessory}
+    )
+
+
+@login_required
+def delete_accessory(request, pk):
+    if not request.user.is_superuser:
+        raise Http404()
+
+    accessory = get_object_or_404(Accessory, pk=pk)
+    accessory.delete()
+    messages.success(request, "Аксессуар удалён")
+    return redirect("bboard:accessories")
 
 

@@ -7,8 +7,8 @@
                     <ul>
                         <li><a href="{% url 'bboard:index' %}">Главная</a></li>
                         <li><a href="{% url 'bboard:about' %}">О нас</a></li>
-                        <li><a href="">Наши сервисы</a></li>
-                        <li><a href="">Политика</a></li>
+                        <li><a href="{% url 'bboard:services' %}">сервисы</a></li>
+                        <li><a href="{% url 'bboard:policy' %}">Политика</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -23,8 +23,8 @@
                 <div class="footer-col">
                     <h4>магазин</h4>
                     <ul>
-                        <li><a href="">Бренды</a></li>
-                        <li><a href="">Аксессуары</a></li>
+                        <li><a href="{% url 'bboard:Brands' %}">Бренды</a></li>
+                        <li><a href="{% url 'bboard:accessories' %}">Аксессуары</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

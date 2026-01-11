@@ -82,8 +82,20 @@ margin-top: 4.3%;
     transform: translate(-80px, -30px);
 }
 .action-buttons {
-    margin-top: 45px;
     text-align: center;
+}
+
+.b1.no-text{
+width: 300px;
+    height: 300px;
+    display: inline-block;
+    margin: 15px;
+    margin-top:20px;
+    position: relative;
+    transition: 0.7s;
+}
+.b1.no-text:hover {
+  transform: scale(1.05)
 }
 
 .b1 {
@@ -94,6 +106,7 @@ margin-top: 4.3%;
     margin-top:20px;
     position: relative;
     transition: 0.7s;
+    margin-bottom: 200px;
 }
 .b1:hover {
   transform: scale(1.05)

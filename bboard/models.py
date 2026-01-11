@@ -45,6 +45,8 @@ class Rubric(models.Model):
                             verbose_name='Название')
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", null=True, default=None,
                               blank=True, verbose_name="Фото")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+
     objects = models.Manager.from_queryset(RubricQuerySet)()
     bbs = RubricManager()
 
@@ -57,7 +59,8 @@ class Rubric(models.Model):
     class Meta:
         verbose_name = 'Рубрика'
         verbose_name_plural = 'Рубрики'
-        ordering = ['photo', 'name', ]
+        ordering = ['photo', 'name']
+
 
 
 class BbManager(models.Manager):
@@ -143,3 +146,35 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Профиль {self.user.username}"
+
+class Service(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название сервиса")
+    description = models.TextField(verbose_name="Описание")
+    photo = models.ImageField(upload_to="services/%Y/%m/%d/", verbose_name="Фото")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Accessory(models.Model):
+    title = models.CharField("Название", max_length=100)
+    description = models.TextField("Описание")
+    price = models.DecimalField("Цена", max_digits=12, decimal_places=2)
+    photo = models.ImageField(
+        upload_to="accessories/",
+        blank=True,
+        null=True,
+        verbose_name="Фото"
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Аксессуар"
+        verbose_name_plural = "Аксессуары"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+

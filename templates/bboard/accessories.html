@@ -1,0 +1,34 @@
+{% extends "layout/basic.html" %}
+
+{% block content %}
+<div class="rubrics">
+  <h1>Премиальные аксессуары</h1>
+
+  {% if user.is_superuser %}
+    <a href="{% url 'bboard:add_accessory' %}" class="btn-primary">
+      ➕ Добавить аксессуар
+    </a>
+  {% endif %}
+
+  <div class="services-grid">
+    {% for a in accessories %}
+      <div class="service-card">
+        {% if a.photo %}
+          <img src="{{ a.photo.url }}" alt="{{ a.title }}">
+        {% endif %}
+
+        <h3>{{ a.title }}</h3>
+        <p>{{ a.description }}</p>
+        <strong>{{ a.price }} ₸</strong>
+
+        {% if user.is_superuser %}
+          <div class="service-actions">
+            <a href="{% url 'bboard:edit_accessory' a.pk %}" class="btn-secondary">✏</a>
+            <a href="{% url 'bboard:delete_accessory' a.pk %}" class="btn-danger">🗑</a>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

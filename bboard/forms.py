@@ -10,10 +10,11 @@ from django.forms.widgets import Select, TextInput, PasswordInput
 from django import forms
 from django.utils.safestring import mark_safe
 
-from bboard.models import Bb, Rubric
+from bboard.models import Bb, Rubric, Service
 from captcha.fields import CaptchaField
 from django.forms.widgets import ClearableFileInput
 from .models import Profile
+from .models import Accessory
 
 class CustomClearableFileInput(ClearableFileInput):
     template_with_initial = (
@@ -187,3 +188,26 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             "avatar": forms.FileInput(attrs={"class": "form-control"})
         }
+class ServiceForm(forms.ModelForm):
+    delete_photo = forms.BooleanField(
+        required=False,
+        label="Удалить текущее фото"
+    )
+
+    class Meta:
+        model = Service
+        fields = ["title", "description", "photo", "delete_photo"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-input"}),
+            "description": forms.Textarea(attrs={"class": "form-input", "rows": 4}),
+        }
+
+class AccessoryForm(forms.ModelForm):
+    delete_photo = forms.BooleanField(
+        required=False,
+        label="Удалить фотографию"
+    )
+
+    class Meta:
+        model = Accessory
+        fields = ["title", "description", "price", "photo", "is_active"]

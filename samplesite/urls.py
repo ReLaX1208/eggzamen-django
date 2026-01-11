@@ -35,6 +35,8 @@ path("password_change/",
     path('', include('bboard.urls', namespace='bboard')),
     path('profile/', ProfileUser.as_view(), name='profile'),
     path('captcha/', include('captcha.urls')),
+path("api/", include("bboard.api_urls")),
+
 ]
 
 if settings.DEBUG:

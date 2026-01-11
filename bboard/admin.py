@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from bboard.models import Bb, Rubric
+from bboard.models import Bb, Rubric, Service
 
 from django.contrib import admin
 from django.utils.safestring import mark_safe
@@ -25,3 +25,8 @@ class BbAdmin(admin.ModelAdmin):
 
 admin.site.register(Bb, BbAdmin)
 admin.site.register(Rubric)
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "created_at")
+    search_fields = ("title",)
