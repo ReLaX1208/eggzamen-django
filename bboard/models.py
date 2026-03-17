@@ -1,0 +1,180 @@
+import os
+
+from django.contrib.auth.models import User
+from django.core import validators
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.templatetags.static import static
+
+
+def is_active_default():
+    return True
+
+
+class MinMaxValueValidator:
+    def __init__(self, min_value, max_value):
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def __call__(self, val):
+        if val < self.min_value or val > self.max_value:
+            raise ValidationError('Введённое число должно находиться в диапазоне от '
+                                  '%(min)s до %(max)s',
+                                  code='out_of_range',
+                                  params={'min': self.min_value, 'max': self.max_value})
+
+
+class RubricQuerySet(models.QuerySet):
+    def order_by_bb_count(self):
+        return super().annotate(
+            cnt=models.Count('bb')
+        ).order_by('-cnt')
+
+
+class RubricManager(models.Manager):
+
+    def get_queryset(self):
+        return RubricQuerySet(self.model, using=self._db)
+
+    def order_by_bb_count(self):
+        return self.get_queryset().order_by_bb_count()
+
+
+class Rubric(models.Model):
+    name = models.CharField(max_length=20, db_index=True, unique=True,
+                            verbose_name='Название')
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", null=True, default=None,
+                              blank=True, verbose_name="Фото")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+
+    objects = models.Manager.from_queryset(RubricQuerySet)()
+    bbs = RubricManager()
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f"/{self.pk}/"
+
+    class Meta:
+        verbose_name = 'Рубрика'
+        verbose_name_plural = 'Рубрики'
+        ordering = ['photo', 'name']
+
+
+
+class BbManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('price')
+
+
+class Bb(models.Model):
+    KINDS = (
+        (None, 'Выберите тип публикуемого объявления'),
+        ('b', 'Куплю'),
+        ('s', 'Продам'),
+        ('c', 'Обменяю'),
+    )
+
+    kind = models.CharField(max_length=1, choices=KINDS, default='s')
+
+    rubric = models.ForeignKey('Rubric', null=True, on_delete=models.CASCADE,
+                               verbose_name='Рубрика',)
+    title = models.CharField(max_length=50, verbose_name='Товар',
+                             validators=[
+                                 validators.RegexValidator(
+                                     regex='^.{4,}$',
+                                     message='Слишком мало букавак!',
+                                     code='invalid',
+                                 )
+                             ],
+                             error_messages={'invalid': 'Неправильное название товара!'}
+                             )
+    content = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Описание')
+    price = models.DecimalField(max_digits=15, decimal_places=2,
+                                null=True, blank=True, verbose_name='Цена', )
+    published = models.DateTimeField(auto_now_add=True, db_index=True,
+                                     verbose_name='Опубликовано')
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", default=None,
+                              blank=True, verbose_name="Фото")
+
+    objects = models.Manager()
+    by_price = BbManager()
+
+    def title_and_price(self):
+        if self.price:
+            return f'{self.title} ({self.price:.2f})'
+        else:
+            return self.title
+
+    title_and_price.short_description = 'Название и цена'
+
+    def __str__(self):
+        return f'{self.title} ({self.price} тг.)'
+
+    def clean(self):
+        errors = {}
+        if not self.content:
+            errors['content'] = ValidationError('Укажите описание продаваемого товара')
+
+        if self.price and self.price < 0:
+            errors['price'] = ValidationError('Укажите неотрицательное значение цены')
+
+        if errors:
+            raise ValidationError(errors)
+
+    class Meta:
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
+        ordering = ['-published', 'title']
+        get_latest_by = 'published'
+        permissions = (("can_create", "Can create anything"),)
+
+
+class UploadFiles(models.Model):
+    file = models.FileField(upload_to='uploads_model')
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    avatar = models.ImageField(upload_to="avatars/", blank=True, null=True, verbose_name="Аватар")
+
+    def get_avatar_url(self):
+        if self.avatar and os.path.isfile(self.avatar.path):
+            return self.avatar.url
+        return static('avatars/default-avatar.png')
+
+
+    def __str__(self):
+        return f"Профиль {self.user.username}"
+
+class Service(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название сервиса")
+    description = models.TextField(verbose_name="Описание")
+    photo = models.ImageField(upload_to="services/%Y/%m/%d/", verbose_name="Фото")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Accessory(models.Model):
+    title = models.CharField("Название", max_length=100)
+    description = models.TextField("Описание")
+    price = models.DecimalField("Цена", max_digits=12, decimal_places=2)
+    photo = models.ImageField(
+        upload_to="accessories/",
+        blank=True,
+        null=True,
+        verbose_name="Фото"
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Аксессуар"
+        verbose_name_plural = "Аксессуары"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+

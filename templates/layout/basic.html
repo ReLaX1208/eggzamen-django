@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load static %}
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Главная{% endblock %} :: Доска объявлений</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'bboard/style.css' %}">
+</head>
+<body>
+{% include 'layout/inc/main_menu.html' %}
+{% if messages %}
+    {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<main>
+    {% block net %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block da %}{% endblock %}
+</main>
+
+{% include 'layout/inc/footer.html' %}
+{% bootstrap_javascript %}
+
+<button class="chat-button" id="chatBtn">💬</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">Чат помощи</div>
+  <div class="chat-messages" id="chatMessages">
+    <p><b>Бот:</b> Здравствуйте! Чем могу помочь?</p>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Напишите сообщение...">
+    <button id="sendBtn">➤</button>
+  </div>
+</div>
+
+<script>
+   var imgs = document.querySelectorAll('.slider img');
+   var currentImg = 0;
+   const interval = 4000;
+   function changeSlide() {
+       imgs.forEach(img => img.classList.remove('active'));
+       currentImg = (currentImg + 1) % imgs.length;
+       imgs[currentImg].classList.add('active');
+   }
+   setInterval(changeSlide, interval);
+
+   const chatBtn = document.getElementById("chatBtn");
+   const chatWindow = document.getElementById("chatWindow");
+   const sendBtn = document.getElementById("sendBtn");
+   const chatInput = document.getElementById("chatInput");
+   const chatMessages = document.getElementById("chatMessages");
+
+   chatBtn.addEventListener("click", () => {
+     chatWindow.style.display = chatWindow.style.display === "flex" ? "none" : "flex";
+   });
+
+   sendBtn.addEventListener("click", () => {
+     const message = chatInput.value.trim();
+     if (message) {
+       const msgElement = document.createElement("p");
+       msgElement.innerHTML = `<b>Вы:</b> ${message}`;
+       chatMessages.appendChild(msgElement);
+       chatInput.value = "";
+       chatMessages.scrollTop = chatMessages.scrollHeight;
+     }
+   });
+
+</script>
+</body>
+</html>

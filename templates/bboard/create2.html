@@ -1,0 +1,19 @@
+{% extends "layout/basic.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Добавление рубрики{% endblock %}
+
+{% block content %}
+<div class="rubrics">
+<h2>Добавление рубрики</h2>
+<div class="ad-form-container">
+<form method="post" enctype="multipart/form-data" class="ad-form">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' show_help=False size='sm' %}
+<div class="form-actions">
+            {% bootstrap_button 'Добавить' button_type='submit' button_class='btn-primary' %}
+        </div>
+</form>
+    </div>
+    </div>
+{% endblock %}

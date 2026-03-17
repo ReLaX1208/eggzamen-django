@@ -1,0 +1,42 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Изменение рубрики{% endblock %}
+
+{% block content %}
+<div class="rubrics">
+<h2 class="form-title">Изменение рубрики</h2>
+<div class="form-container">
+
+    <form method="post" enctype="multipart/form-data" class="styled-form">
+        {% csrf_token %}
+
+        <div class="form-section">
+            {% for f in form %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                    {{ f }}
+                    <div class="form-error">{{ f.errors }}</div>
+                </div>
+            {% endfor %}
+        </div>
+     <div class="form-section">
+    <h3>Фотография</h3>
+    {% if form.instance.photo %}
+        <div class="current-avatar">
+            <img src="{{ form.instance.photo.url }}" alt="{{ form.instance.title }}">
+        </div>
+    {% elif form.instance.image %}
+        <div class="current-avatar">
+            <img src="{{ form.instance.image.url }}" alt="{{ form.instance.title }}">
+        </div>
+    {% endif %}
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Сохранить</button>
+            <a href="{% url 'bboard:delete_rubric' rubric.pk %}" class="btn-danger">🗑 Удалить</a>
+            <button type="button" class="btn-secondary" onclick="window.history.back();">✖ Отмена</button>
+        </div>
+    </form>
+</div>
+    </div>
+{% endblock %}
+

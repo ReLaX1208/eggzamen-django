@@ -1,0 +1,41 @@
+{% load static %}
+<div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>компания</h4>
+                    <ul>
+                        <li><a href="{% url 'bboard:index' %}">Главная</a></li>
+                        <li><a href="{% url 'bboard:about' %}">О нас</a></li>
+                        <li><a href="{% url 'bboard:services' %}">сервисы</a></li>
+                        <li><a href="{% url 'bboard:policy' %}">Политика</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>помощь</h4>
+                    <ul>
+                        <li><a href="">FAQ</a></li>
+                        <li><a href="">Отправка</a>
+                        </li><li><a href="">Возврат</a></li>
+                        <li><a href="">Оплата</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>магазин</h4>
+                    <ul>
+                        <li><a href="{% url 'bboard:Brands' %}">Бренды</a></li>
+                        <li><a href="{% url 'bboard:accessories' %}">Аксессуары</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>соц сети</h4>
+                    <div class="social-links">
+                        <a href="#"><img src="{% static 'bboard/icons8-facebook-100.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'bboard/icons8-instagram-100.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'bboard/icons8-линкедин-100.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'bboard/icons8-твиттер-100.png'%}" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

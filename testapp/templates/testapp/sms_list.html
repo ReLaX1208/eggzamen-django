@@ -1,0 +1,10 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+  <h1>Список SMS</h1>
+  <ul>
+    {% for sms in sms_list %}
+      <li>{{ sms.text }} ({{ sms.created_at }})</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

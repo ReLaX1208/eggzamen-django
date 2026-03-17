@@ -1,0 +1,70 @@
+{% extends "layout/basic.html" %}
+{% block content %}
+<div class="rubrics">
+<div class="profile-container">
+    <h1 class="profile-title">Мой профиль</h1>
+
+    <div class="profile-card">
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+
+            <div class="form-error">
+                {{ user_form.non_field_errors }}
+                {{ profile_form.non_field_errors }}
+            </div>
+
+            <div class="form-section">
+                <h3>Основные данные</h3>
+                {% for f in user_form %}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                        {{ f }}
+                        <div class="form-error">{{ f.errors }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-section">
+                <h3>Аватар</h3>
+
+                {# Поле загрузки #}
+                <div class="form-group">
+                    <label class="form-label" for="{{ profile_form.avatar.id_for_label }}">
+                        {{ profile_form.avatar.label }}:
+                    </label>
+                    {{ profile_form.avatar }}
+                    <div class="form-error">{{ profile_form.avatar.errors }}</div>
+                </div>
+
+                {# Текущий аватар #}
+                {% if user.profile.get_avatar_url %}
+                    <div class="current-avatar">
+                        <p>Текущий аватар:</p>
+                        <img src="{{ user.profile.get_avatar_url }}" alt="avatar" width="120">
+                    </div>
+                {% endif %}
+
+                {# Кнопка "Удалить аватар" показывается только если аватар не default #}
+                {% if user.profile.avatar and user.profile.avatar.name != "avatars/default-avatar.png" %}
+    <div class="form-group">
+        <button type="submit" name="delete_avatar" class="btn-delete">🗑 Удалить аватар</button>
+    </div>
+{% endif %}
+
+
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'password_change' %}" class="password-link">Сменить пароль</a>
+                <button type="submit" class="btn-save">💾 Сохранить</button>
+            </div>
+        </form>
+
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">🚪 Выйти</button>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

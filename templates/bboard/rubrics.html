@@ -1,0 +1,71 @@
+{% extends "layout/basic.html" %}
+{% block rubrics %}
+{% block content %}
+    <div class="rubrics">
+<h1>Рубрики</h1>
+{% for rubric in rubrics %}
+            <div class="b1">
+                    <h2>{{rubric.name}}</h2>
+                {% if rubric.photo %}
+            <a href="{{ rubric.get_absolute_url }}" class="clickable-div">
+
+            <p class="text-on-top"><img class="imginindex" src="{{rubric.photo.url}}"></p>
+    </a>
+        {% endif %}
+
+        <div class="action-buttons">
+    <div class="form-actions">
+        <a href="{% url 'bboard:edit_rubric' rubric.pk %}" class="btn-primary">✏️ Изменить</a>
+    </div>
+    <div class="form-actions">
+        <a href="{{ rubric.get_absolute_url }}" class="btn-primary">ℹ️ Подробнее</a>
+    </div>
+</div>
+
+    </div>
+    {% empty %}
+        <h2>Рубрик нет</h2>
+    {% endfor %}
+    </div>
+{% endblock %}
+{% endblock %}
+{% block da %}
+    <div class="paginator">
+        {% if page.has_other_pages %}
+        <nav aria-label="pagination" class="pagination">
+            <ul class="pagination">
+
+                {% if page.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+
+                {% for p in page.paginator.page_range %}
+                    {% if not p == page.number %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link disabled bg-primary text-light"
+                               href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page.next_page_number }}"> > </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
+
+    {% endif %}
+    {% endblock %}
