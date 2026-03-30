@@ -1,0 +1,17 @@
+Чтобы запустить проект в двух версиях, необходимо:
+
+Открыть ветку eggzamen в PyCharm.
+Открыть ветку visual в Visual Studio.
+
+Далее:
+
+В терминале Visual Studio выполнить команды:
+
+npm install
+npm run start
+
+В PyCharm запустить сервер командой:
+
+python manage.py runserver localhost:8000
+
+После этого обе части проекта будут работать одновременно.
